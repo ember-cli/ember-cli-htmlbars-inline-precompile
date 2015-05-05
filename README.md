@@ -1,25 +1,25 @@
-# Ember-cli-htmlbars-inline-precompile
+# ember-cli-htmlbars-inline-precompile
 
-This README outlines the details of collaborating on this Ember addon.
+[![Build Status](https://travis-ci.org/pangratz/ember-cli-htmlbars-inline-precompile.svg)](https://travis-ci.org/pangratz/ember-cli-htmlbars-inline-precompile)
 
-## Installation
+Precompile HTMLBars template strings within the tests of an Ember-CLI project
+via ES6 tagged template strings:
 
-* `git clone` this repository
-* `npm install`
-* `bower install`
+``` js
+// ember-cli-project/test/unit/components/my-component-test.js
+import precompile from 'htmlbars-inline-precompile';
+import { moduleForComponent, test } from 'ember-qunit';
 
-## Running
+moduleForComponent('my-component');
 
-* `ember server`
-* Visit your app at http://localhost:4200.
+test('it renders', function(assert) {
+  var component = this.subject({
+    greeting: "hello ember testing",
+    layout: precompile`greeting: {{greeting}}`
+  });
 
-## Running Tests
+  assert.equal(this.$().text().trim(), "greeting: hello ember testing");
+});
+```
 
-* `ember test`
-* `ember test --server`
-
-## Building
-
-* `ember build`
-
-For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
+where the addon is installed via `ember install ember-cli-htmlbars-precompile`.
