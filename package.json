@@ -1,7 +1,7 @@
 {
   "name": "ember-cli-htmlbars-inline-precompile",
   "version": "0.0.1",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "Precompile inline HTMLBars templates via ES6 tagged template strings",
   "directories": {
     "doc": "doc",
     "test": "tests"
