@@ -2,7 +2,13 @@ import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 import { module, test } from 'qunit';
 
-module('inline precompilation works');
+module('inline precompilation works', {
+  afterEach: function() {
+    Ember.run(function() {
+      Ember.$("#ember-testing").empty();
+    });
+  }
+});
 
 test('using `hbs` tagged string places the precompiled template', function(assert) {
   var view = Ember.View.create({
