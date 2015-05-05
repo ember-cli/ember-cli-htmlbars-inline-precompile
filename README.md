@@ -25,3 +25,10 @@ test('it renders', function(assert) {
 ```
 
 where the addon is installed via `ember install ember-cli-htmlbars-inline-precompile`.
+
+
+### Thanks
+
+This addon wouldn't exist without the lightning fast response by open source hero [@sebmck](https://github.com/sebmck),
+who implemented the [feature to replace a node with a source string](http://git.io/vJSrs) not
+even an hour after I mentioned it in gitter :heart:.
