@@ -22,4 +22,4 @@ test('it renders', function(assert) {
 });
 ```
 
-where the addon is installed via `ember install ember-cli-htmlbars-precompile`.
+where the addon is installed via `ember install ember-cli-htmlbars-inline-precompile`.
