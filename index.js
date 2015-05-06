@@ -2,7 +2,7 @@
 'use strict';
 
 var path = require('path');
-var HTMLBarsInlinePrecompilePlugin = require('./lib/babel-transform-tagged-template');
+var HTMLBarsInlinePrecompilePlugin = require('babel-plugin-htmlbars-inline-precompile');
 
 module.exports = {
   name: 'ember-cli-htmlbars-inline-precompile',
@@ -14,7 +14,7 @@ module.exports = {
     app.options.babel.plugins = app.options.babel.plugins || [];
 
     var Compiler = require(this.templateCompilerPath());
-    var PrecompileInlineHTMLBarsPlugin = HTMLBarsInlinePrecompilePlugin(Compiler);
+    var PrecompileInlineHTMLBarsPlugin = HTMLBarsInlinePrecompilePlugin(Compiler.precompile);
 
     // add the HTMLBarsInlinePrecompilePlugin to the list of plugins used by
     // the `ember-cli-babel` addon
