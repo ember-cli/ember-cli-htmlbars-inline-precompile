@@ -1,6 +1,7 @@
 # ember-cli-htmlbars-inline-precompile
 
 [![Build Status](https://travis-ci.org/pangratz/ember-cli-htmlbars-inline-precompile.svg)](https://travis-ci.org/pangratz/ember-cli-htmlbars-inline-precompile)
+[![Ember Observer Score](http://emberobserver.com/badges/ember-cli-htmlbars-inline-precompile.svg)](http://emberobserver.com/addons/ember-cli-htmlbars-inline-precompile)
 
 Precompile HTMLBars template strings within the tests of an Ember-CLI project
 via ES6 tagged template strings:
