@@ -39,7 +39,7 @@ moduleForComponent('my-component', {
   integration: true
 });
 
-test('block params work', function() {
+test('block params work', function(assert) {
   this.render(hbs`
     {{#my-component date=theDate as |daysAgo| }}
       This happened {{daysAgo}} days ago.
@@ -47,7 +47,7 @@ test('block params work', function() {
   `);
 
   this.set('theDate', new Date(2015, 2, 11));
-  assert.equal(this.$().text().trim(), "This happened 123 days ago");
+  assert.equal(this.$().text().trim(), "This happened 123 days ago.");
 });
 
 ```
