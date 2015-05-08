@@ -25,6 +25,33 @@ test('it renders', function(assert) {
 });
 ```
 
+---
+
+
+If you are using `ember-cli-qunit@0.3.12`, writing component integration tests
+becomes as readable as:
+
+``` js
+import hbs from 'htmlbars-inline-precompile';
+import { moduleForComponent, test } from 'ember-qunit';
+
+moduleForComponent('my-component', {
+  integration: true
+});
+
+test('block params work', function() {
+  this.render(hbs`
+    {{#my-component date=theDate as |daysAgo| }}
+      This happened {{daysAgo}} days ago.
+    {{/my-component}}
+  `);
+
+  this.set('theDate', new Date(2015, 2, 11));
+  assert.equal(this.$().text().trim(), "This happened 123 days ago");
+});
+
+```
+
 
 ### Installation
 
