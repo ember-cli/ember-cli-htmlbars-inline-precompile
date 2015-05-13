@@ -10,6 +10,7 @@ module.exports = {
   included: function(app) {
     this._super.included(app);
 
+    app.options = app.options || {};
     app.options.babel = app.options.babel || {};
     app.options.babel.plugins = app.options.babel.plugins || [];
 
