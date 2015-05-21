@@ -2,39 +2,36 @@
 'use strict';
 
 var path = require('path');
+var checker = require('ember-cli-version-checker');
 var HTMLBarsInlinePrecompilePlugin = require('babel-plugin-htmlbars-inline-precompile');
 
 module.exports = {
   name: 'ember-cli-htmlbars-inline-precompile',
 
-  included: function(app) {
-    this._super.included(app);
+  parentRegistry: null,
 
-    app.options.babel = app.options.babel || {};
-    app.options.babel.plugins = app.options.babel.plugins || [];
-
-    var Compiler = require(this.templateCompilerPath());
-    var PrecompileInlineHTMLBarsPlugin = HTMLBarsInlinePrecompilePlugin(Compiler.precompile);
-
-    // add the HTMLBarsInlinePrecompilePlugin to the list of plugins used by
-    // the `ember-cli-babel` addon
-    app.options.babel.plugins.push(PrecompileInlineHTMLBarsPlugin);
+  init: function() {
+    checker.assertAbove(this, '0.2.0');
   },
 
-  // borrowed from ember-cli-htmlbars http://git.io/vJDrW
-  projectConfig: function () {
-    return this.project.config(process.env.EMBER_ENV);
-  },
+  setupPreprocessorRegistry: function(type, registry) {
+    var self = this;
 
-  // borrowed from ember-cli-htmlbars http://git.io/vJDrw
-  templateCompilerPath: function() {
-    var config = this.projectConfig();
-    var templateCompilerPath = config['ember-cli-htmlbars'] && config['ember-cli-htmlbars'].templateCompilerPath;
+    registry.add('babel-plugin', {
+      name: 'ember-cli-htmlbars-inline-precompile',
+      plugin: function(babel) {
+        var htmlbarsPlugin = self.parentRegistry.load('template').filter(function(addon) {
+          return addon.name == 'ember-cli-htmlbars';
+        })[0];
 
-    if (!templateCompilerPath) {
-      templateCompilerPath = this.project.bowerDirectory + '/ember/ember-template-compiler';
+        var precompile = htmlbarsPlugin.precompile;
+
+        return HTMLBarsInlinePrecompilePlugin(precompile)(babel);
+      }
+    });
+
+    if (type === 'parent') {
+      this.parentRegistry = registry;
     }
-
-    return path.resolve(this.project.root, templateCompilerPath);
   }
 };
