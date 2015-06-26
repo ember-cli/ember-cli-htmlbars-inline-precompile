@@ -1,4 +1,4 @@
-## master
+## 0.1.2 (2015-06-26)
 
 - Bump `belbabel-plugin-htmlbars-inline-precompile` to `0.0.3`
 
