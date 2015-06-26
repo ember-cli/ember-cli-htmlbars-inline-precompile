@@ -38,7 +38,7 @@
     "ember-cli"
   ],
   "dependencies": {
-    "babel-plugin-htmlbars-inline-precompile": "0.0.2",
+    "babel-plugin-htmlbars-inline-precompile": "0.0.3",
     "ember-cli-babel": "^5.0.0",
     "ember-cli-htmlbars": "^0.7.6"
   },
