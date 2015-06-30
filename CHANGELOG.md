@@ -1,3 +1,7 @@
+## 0.1.3 (2015-06-30)
+
+- Bump `belbabel-plugin-htmlbars-inline-precompile` to `0.0.4`
+
 ## 0.1.2 (2015-06-26)
 
 - Bump `belbabel-plugin-htmlbars-inline-precompile` to `0.0.3`
