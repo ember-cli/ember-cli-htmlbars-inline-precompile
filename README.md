@@ -52,6 +52,32 @@ test('block params work', function(assert) {
 
 ```
 
+### CoffeeScript support
+
+Version `0.2.0` introduced the possibility to use this addon within
+CoffeeScript, using [`ember-cli-coffeescript`](https://github.com/kimroen/ember-cli-coffeescript). Since the
+backtick `\`` is used to embed JavaScript, the `hbs` function can be invoked with the
+template as a normal string:
+
+``` coffeescript
+`import hbs from 'htmlbars-inline-precompile';`
+`import { moduleForComponent, test } from 'ember-qunit';`
+
+moduleForComponent "my-component",
+  integration: true
+
+test "block params work", (assert) ->
+  @render hbs '''
+    {{#my-component date=theDate as |daysAgo| }}
+      This happened {{daysAgo}} days ago.
+    {{/my-component}}
+  '''
+
+  @set 'theDate', new Date(2015, 2, 11)
+  assert.equal this.$().text().trim(), "This happened 123 days ago."
+```
+
+
 
 ### Installation
 
