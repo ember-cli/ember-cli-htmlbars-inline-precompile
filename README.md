@@ -56,7 +56,7 @@ test('block params work', function(assert) {
 
 Version `0.2.0` introduced the possibility to use this addon within
 CoffeeScript, using [`ember-cli-coffeescript`](https://github.com/kimroen/ember-cli-coffeescript). Since the
-backtick `\`` is used to embed JavaScript, the `hbs` function can be invoked with the
+backtick ``` ` ``` is used to embed JavaScript, the `hbs` function can be invoked with the
 template as a normal string:
 
 ``` coffeescript
