@@ -1,3 +1,7 @@
+## 0.2.0 (2015-07-11)
+
+- Bump `belbabel-plugin-htmlbars-inline-precompile` to `0.0.5` and hereby allow a string parameter to `hbs`
+
 ## 0.1.3 (2015-06-30)
 
 - Bump `belbabel-plugin-htmlbars-inline-precompile` to `0.0.4`
