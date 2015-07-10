@@ -37,3 +37,16 @@ test('multiline string', function(assert) {
 
   assert.equal(view.$().html().trim(), "greeting: <span>hello from view</span>", "multiline string works");
 });
+
+test('a single string parameter passed to `hbs` works', function(assert) {
+  var view = Ember.View.create({
+    greeting: "hello",
+    template: hbs('<h1>{{view.greeting}}</h1>')
+  });
+
+  Ember.run(function() {
+    view.appendTo('#ember-testing');
+  });
+
+  assert.equal(view.$().html().trim(), "<h1>hello</h1>", "single string parameter works");
+});
