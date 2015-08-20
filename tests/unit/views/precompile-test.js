@@ -11,9 +11,9 @@ module('inline precompilation works', {
 });
 
 test('using `hbs` tagged string places the precompiled template', function(assert) {
-  var view = Ember.View.create({
+  var view = Ember.Component.create({
     greeting: "hello from view",
-    template: hbs`greeting: {{view.greeting}}`
+    layout: hbs`greeting: {{greeting}}`
   });
 
   Ember.run(function() {
@@ -24,10 +24,10 @@ test('using `hbs` tagged string places the precompiled template', function(asser
 });
 
 test('multiline string', function(assert) {
-  var view = Ember.View.create({
+  var view = Ember.Component.create({
     greeting: "hello from view",
-    template: hbs`
-      greeting: <span>{{view.greeting}}</span>
+    layout: hbs`
+      greeting: <span>{{greeting}}</span>
     `
   });
 
@@ -39,9 +39,9 @@ test('multiline string', function(assert) {
 });
 
 test('a single string parameter passed to `hbs` works', function(assert) {
-  var view = Ember.View.create({
+  var view = Ember.Component.create({
     greeting: "hello",
-    template: hbs('<h1>{{view.greeting}}</h1>')
+    layout: hbs('<h1>{{greeting}}</h1>')
   });
 
   Ember.run(function() {
