@@ -19,7 +19,10 @@ module.exports = {
 
     // add the HTMLBarsInlinePrecompilePlugin to the list of plugins used by
     // the `ember-cli-babel` addon
-    app.options.babel.plugins.push(PrecompileInlineHTMLBarsPlugin);
+    if (!this._registeredWithBabel) {
+      app.options.babel.plugins.push(PrecompileInlineHTMLBarsPlugin);
+      this._registeredWithBabel = true;
+    }
   },
 
   // borrowed from ember-cli-htmlbars http://git.io/vJDrW
