@@ -1,3 +1,9 @@
+## 0.3.0 (2015-08-31)
+
+- Bump Ember-CLI and don't use deprecated `Ember.View` in tests [15b6a06](https://github.com/pangratz/ember-cli-htmlbars-inline-precompile/commit/15b6a06d1ac4702e9431d6dcb3453da332e0d785)
+- Allow more than one instance of `EmberApp` within `ember-cli-buildj.js`[#21](https://github.com/pangratz/ember-cli-htmlbars-inline-precompile/pull/21) - thanks [@ef4](https://github.com/ef4)
+- Fix bug where `app.options` doesn't exist [#5](https://github.com/pangratz/ember-cli-htmlbars-inline-precompile/pull/5) - thanks [@wagenet](https://github.com/wagenet)
+
 ## 0.2.0 (2015-07-11)
 
 - Bump `belbabel-plugin-htmlbars-inline-precompile` to `0.0.5` and hereby allow a string parameter to `hbs`
