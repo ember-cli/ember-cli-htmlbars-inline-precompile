@@ -85,6 +85,8 @@ Install the addon via `ember install ember-cli-htmlbars-inline-precompile`
 
 ### Troubleshooting
 
+#### `Plugin undefined didn't export a default Transformer instance`
+
 If you get an error like `Plugin undefined didn't export a default Transformer
 instance` this likely means that the installed version of `babel-core` is
 outdated. You can check for the installed version via `npm ls babel-core`
@@ -121,6 +123,14 @@ your-app@0.0.0 ~/your-app
 Starting the development environment via `ember server` or `ember test
 --server` should start as expected and your inline template strings are
 compiled.
+
+#### JSHint problems with `ember-cli-mocha`: `Expected ')' and instead saw '`
+
+If `ember-cli-mocha` complains with a message like `Expected ')' and instead saw '`,
+you need to upgrade the used `ember-cli-mocha` package in your Ember-CLI app/addon. This
+has been discussed in [switchfly/ember-cli-mocha#57](https://github.com/switchfly/ember-cli-mocha/pull/57#discussion_r32633195),
+where the solution is a clean [`npm install`](https://github.com/switchfly/ember-cli-mocha/pull/57#discussion_r32654980).
+
 
 ### Caveats
 
