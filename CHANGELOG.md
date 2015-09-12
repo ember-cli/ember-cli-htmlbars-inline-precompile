@@ -1,3 +1,7 @@
+## 0.3.1 (2015-09-12)
+
+- Bump ember-cli-htmlbars [#23](https://github.com/pangratz/ember-cli-htmlbars-inline-precompile/pull/23) - thanks [@joliss](https://github.com/joliss)
+
 ## 0.3.0 (2015-08-31)
 
 - Bump Ember-CLI and don't use deprecated `Ember.View` in tests [15b6a06](https://github.com/pangratz/ember-cli-htmlbars-inline-precompile/commit/15b6a06d1ac4702e9431d6dcb3453da332e0d785)
