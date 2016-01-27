@@ -163,6 +163,6 @@ in your test-build and use `Ember.HTMLBars.compile("…")` within your tests.
 
 ### Thanks
 
-This addon wouldn't exist without the lightning fast response by open source hero [@sebmck](https://github.com/sebmck),
+This addon wouldn't exist without the lightning fast response by open source hero [@kittens](https://github.com/kittens),
 who implemented the [feature to replace a node with a source string](http://git.io/vJSrs) not
 even an hour after I mentioned it in gitter :heart:.
