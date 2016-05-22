@@ -35,7 +35,10 @@ module.exports = {
     var config = this.projectConfig();
     var templateCompilerPath = config['ember-cli-htmlbars'] && config['ember-cli-htmlbars'].templateCompilerPath;
 
-    if (!templateCompilerPath) {
+    var ember = this.project.findAddonByName('ember-core');
+    if (ember) {
+      return ember.absolutePaths.templateCompiler;
+    } else if (!templateCompilerPath) {
       templateCompilerPath = this.project.bowerDirectory + '/ember/ember-template-compiler';
     }
 
