@@ -14,8 +14,28 @@ module.exports = {
     app.options.babel = app.options.babel || {};
     app.options.babel.plugins = app.options.babel.plugins || [];
 
-    var Compiler = require(this.templateCompilerPath());
+    // borrowed from ember-cli-htmlbars http://git.io/vJDrW
+    var projectConfig = this.projectConfig() || {};
+    var EmberENV = projectConfig.EmberENV || {};
+    var templateCompilerPath = this.templateCompilerPath();
+
+    // ensure we get a fresh templateCompilerModuleInstance per ember-addon
+    // instance NOTE: this is a quick hack, and will only work as long as
+    // templateCompilerPath is a single file bundle
+    //
+    // (╯°□°）╯︵ ɹǝqɯǝ
+    //
+    // we will also fix this in ember for future releases
+    delete require.cache[templateCompilerPath];
+
+    global.EmberENV = EmberENV;
+
+    var Compiler = require(templateCompilerPath);
     var PrecompileInlineHTMLBarsPlugin = HTMLBarsInlinePrecompilePlugin(Compiler.precompile);
+
+    delete require.cache[templateCompilerPath];
+    delete global.Ember;
+    delete global.EmberENV;
 
     // add the HTMLBarsInlinePrecompilePlugin to the list of plugins used by
     // the `ember-cli-babel` addon
