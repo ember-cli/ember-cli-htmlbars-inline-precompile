@@ -1,3 +1,7 @@
+## 0.3.3 (2016-07-28)
+
+- Ensure Ember feature flags are available when precompiling (support for testing Glimmer v2). [#30](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/30) - thanks [@chadhietala](https://github.com/chadhietala)
+
 ## 0.3.1 (2015-09-12)
 
 - Bump ember-cli-htmlbars [#23](https://github.com/pangratz/ember-cli-htmlbars-inline-precompile/pull/23) - thanks [@joliss](https://github.com/joliss)
