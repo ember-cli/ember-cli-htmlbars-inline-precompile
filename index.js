@@ -10,6 +10,12 @@ module.exports = {
   included: function(app) {
     this._super.included(app);
 
+    var emberCLIHtmlBars = this.project.findAddonByName('ember-cli-htmlbars');
+
+    if(emberCLIHtmlBars && emberCLIHtmlBars.inlinePrecompilerRegistered) {
+      return;
+    }
+
     app.options = app.options || {};
     app.options.babel = app.options.babel || {};
     app.options.babel.plugins = app.options.babel.plugins || [];
@@ -31,7 +37,7 @@ module.exports = {
     global.EmberENV = EmberENV;
 
     var Compiler = require(templateCompilerPath);
-    var PrecompileInlineHTMLBarsPlugin = HTMLBarsInlinePrecompilePlugin(Compiler.precompile);
+    var PrecompileInlineHTMLBarsPlugin = HTMLBarsInlinePrecompilePlugin(Compiler.precompile); // jshint ignore:line
 
     delete require.cache[templateCompilerPath];
     delete global.Ember;
