@@ -2,6 +2,7 @@
 'use strict';
 
 var path = require('path');
+var fs = require('fs');
 var HTMLBarsInlinePrecompilePlugin = require('babel-plugin-htmlbars-inline-precompile');
 
 module.exports = {
@@ -37,7 +38,11 @@ module.exports = {
     global.EmberENV = EmberENV;
 
     var Compiler = require(templateCompilerPath);
-    var PrecompileInlineHTMLBarsPlugin = HTMLBarsInlinePrecompilePlugin(Compiler.precompile); // jshint ignore:line
+    var templateCompilerFullPath = require.resolve(templateCompilerPath);
+    var templateCompilerCacheKey = fs.readFileSync(templateCompilerFullPath, { encoding: 'utf-8' });
+    var PrecompileInlineHTMLBarsPlugin = HTMLBarsInlinePrecompilePlugin(Compiler.precompile, {
+      cacheKey: templateCompilerCacheKey
+    });
 
     delete require.cache[templateCompilerPath];
     delete global.Ember;
