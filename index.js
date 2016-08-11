@@ -3,10 +3,17 @@
 
 var path = require('path');
 var fs = require('fs');
+var hashForDep = require('hash-for-dep');
 var HTMLBarsInlinePrecompilePlugin = require('babel-plugin-htmlbars-inline-precompile');
 
 module.exports = {
   name: 'ember-cli-htmlbars-inline-precompile',
+
+  setupPreprocessorRegistry: function(type, registry) {
+    if (type === 'parent') {
+      this.parentRegistry = registry;
+    }
+  },
 
   included: function(app) {
     this._super.included(app);
@@ -37,11 +44,17 @@ module.exports = {
 
     global.EmberENV = EmberENV;
 
+    var pluginInfo = this.astPlugins();
     var Compiler = require(templateCompilerPath);
     var templateCompilerFullPath = require.resolve(templateCompilerPath);
     var templateCompilerCacheKey = fs.readFileSync(templateCompilerFullPath, { encoding: 'utf-8' });
+
+    pluginInfo.plugins.forEach(function(plugin) {
+      Compiler.registerPlugin('ast', plugin);
+    });
+
     var PrecompileInlineHTMLBarsPlugin = HTMLBarsInlinePrecompilePlugin(Compiler.precompile, {
-      cacheKey: templateCompilerCacheKey
+      cacheKey: [templateCompilerCacheKey].concat(pluginInfo.cacheKeys).join('|')
     });
 
     delete require.cache[templateCompilerPath];
@@ -54,6 +67,35 @@ module.exports = {
       app.options.babel.plugins.push(PrecompileInlineHTMLBarsPlugin);
       this._registeredWithBabel = true;
     }
+  },
+
+  // from ember-cli-htmlbars :(
+  astPlugins: function() {
+    var pluginWrappers = this.parentRegistry.load('htmlbars-ast-plugin');
+    var plugins = [];
+    var cacheKeys = [];
+
+    for (var i = 0; i < pluginWrappers.length; i++) {
+      var wrapper = pluginWrappers[i];
+
+      plugins.push(wrapper.plugin);
+
+      if (typeof wrapper.baseDir === 'function') {
+        var pluginHashForDep = hashForDep(wrapper.baseDir());
+        cacheKeys.push(pluginHashForDep);
+      } else {
+        // support for ember-cli < 2.2.0
+        var log = this.ui.writeDeprecateLine || this.ui.writeLine;
+
+        log.call(this.ui, 'ember-cli-htmlbars-inline-precompile is opting out of caching due to an AST plugin that does not provide a caching strategy: `' + wrapper.name + '`.');
+        cacheKeys.push((new Date()).getTime() + '|' + Math.random());
+      }
+    }
+
+    return {
+      plugins: plugins,
+      cacheKeys: cacheKeys
+    };
   },
 
   // borrowed from ember-cli-htmlbars http://git.io/vJDrW
