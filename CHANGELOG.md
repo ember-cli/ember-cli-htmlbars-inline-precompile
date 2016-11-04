@@ -1,3 +1,7 @@
+## 0.3.6 (2016-11-04)
+
+- Fix support for `ember-source` NPM package (renamed from `ember-core` to `ember-source`).
+
 ## 0.3.3 (2016-07-28)
 
 - Ensure Ember feature flags are available when precompiling (support for testing Glimmer v2). [#30](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/30) - thanks [@chadhietala](https://github.com/chadhietala)
