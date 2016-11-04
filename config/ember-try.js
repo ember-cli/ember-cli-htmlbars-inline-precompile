@@ -66,6 +66,19 @@ module.exports = {
           'ember': 'canary'
         }
       }
+    },
+    {
+      name: 'ember-source',
+      bower: {
+        dependencies: {
+          'ember': null
+        }
+      },
+      npm: {
+        dependencies: {
+          'ember-source': 'latest'
+        }
+      }
     }
   ]
 };
