@@ -18,7 +18,7 @@
   "author": "Clemens Müller <cmueller.418@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "broccoli-asset-rev": "^2.1.2",
+    "broccoli-asset-rev": "^2.5.0",
     "ember-cli": "1.13.8",
     "ember-cli-app-version": "2.0.0",
     "ember-cli-coffeescript": "^0.11.0",
