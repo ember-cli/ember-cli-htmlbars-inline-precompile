@@ -39,3 +39,12 @@ script:
   # Usually, it's ok to finish the test scenario without reverting
   #  to the addon's original dependency state, skipping "cleanup".
   - ember try:one $EMBER_TRY_SCENARIO test --skip-cleanup
+
+deploy:
+  provider: npm
+  email: stefan.penner+ember-cli@gmail.com
+  api_key:
+    secure: OrnTvkC2eejgwTnOFs21kmojEM5Tky1JwpWoMgks9dOmQxp4ucpHQyv748FZkQ8NyOExduqs966ko4W/1yZ6wJfNatNZa1I49qCgYXjM3FJI0gxan/Y6KVjt8QQEsR5XsPN5xALh2D65h3WUOwsTQLcCQX9yR0fahj53cDcrmws=
+  on:
+    tags: true
+    repo: ember-cli/ember-cli-htmlbars-inline-precompile
