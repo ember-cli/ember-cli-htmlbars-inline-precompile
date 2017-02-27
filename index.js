@@ -16,7 +16,7 @@ module.exports = {
   },
 
   included: function(app) {
-    this._super.included(app);
+    this._super.included.apply(this, arguments);
 
     var emberCLIHtmlBars = this.project.findAddonByName('ember-cli-htmlbars');
 
