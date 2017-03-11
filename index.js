@@ -15,7 +15,7 @@ module.exports = {
     }
   },
 
-  included: function(app) {
+  included: function() {
     this._super.included.apply(this, arguments);
 
     var emberCLIHtmlBars = this.project.findAddonByName('ember-cli-htmlbars');
@@ -24,9 +24,9 @@ module.exports = {
       return;
     }
 
-    app.options = app.options || {};
-    app.options.babel = app.options.babel || {};
-    app.options.babel.plugins = app.options.babel.plugins || [];
+    var addonOptions = this._getAddonOptions();
+    addonOptions.babel = addonOptions.babel || {};
+    addonOptions.babel.plugins = addonOptions.babel.plugins || [];
 
     // borrowed from ember-cli-htmlbars http://git.io/vJDrW
     var projectConfig = this.projectConfig() || {};
@@ -53,9 +53,10 @@ module.exports = {
       Compiler.registerPlugin('ast', plugin);
     });
 
-    var PrecompileInlineHTMLBarsPlugin = HTMLBarsInlinePrecompilePlugin(Compiler.precompile, {
-      cacheKey: [templateCompilerCacheKey].concat(pluginInfo.cacheKeys).join('|')
-    });
+    var precompile = Compiler.precompile;
+
+    precompile.baseDir = () => path.dirname(templateCompilerFullPath);
+    precompile.cacheKey = () => [templateCompilerCacheKey].concat(pluginInfo.cacheKeys).join('|');
 
     delete require.cache[templateCompilerPath];
     delete global.Ember;
@@ -64,9 +65,13 @@ module.exports = {
     // add the HTMLBarsInlinePrecompilePlugin to the list of plugins used by
     // the `ember-cli-babel` addon
     if (!this._registeredWithBabel) {
-      app.options.babel.plugins.push(PrecompileInlineHTMLBarsPlugin);
+      addonOptions.babel.plugins.push([HTMLBarsInlinePrecompilePlugin, { precompile: Compiler.precompile  }]);
       this._registeredWithBabel = true;
     }
+  },
+
+  _getAddonOptions: function() {
+    return (this.parent && this.parent.options) || (this.app && this.app.options) || {};
   },
 
   // from ember-cli-htmlbars :(
