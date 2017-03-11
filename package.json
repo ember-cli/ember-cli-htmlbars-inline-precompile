@@ -46,6 +46,10 @@
     "babel-plugin-htmlbars-inline-precompile": "^0.2.0",
     "hash-for-dep": "^1.0.2"
   },
+  "devDependencies": {
+    "ember-cli-babel": "^6.0.0-alpha.5",
+    "ember-cli-htmlbars": "^1.1.1"
+  },
   "ember-addon": {
     "configPath": "tests/dummy/config",
     "after": "ember-cli-htmlbars"
