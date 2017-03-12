@@ -71,12 +71,14 @@ module.exports = {
       name: 'ember-source',
       bower: {
         dependencies: {
-          'ember': null
+          'ember': null,
+          'ember-cli-shims': null
         }
       },
       npm: {
         dependencies: {
-          'ember-source': 'latest'
+          'ember-source': 'latest',
+          'ember-cli-shims': '^1.0.0'
         }
       }
     }

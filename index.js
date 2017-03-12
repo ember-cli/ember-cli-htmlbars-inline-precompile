@@ -1,37 +1,49 @@
 /* jshint node: true */
 'use strict';
 
-var path = require('path');
-var fs = require('fs');
-var hashForDep = require('hash-for-dep');
-var HTMLBarsInlinePrecompilePlugin = require('babel-plugin-htmlbars-inline-precompile');
+const path = require('path');
+const fs = require('fs');
+const hashForDep = require('hash-for-dep');
+const HTMLBarsInlinePrecompilePlugin = require('babel-plugin-htmlbars-inline-precompile');
 
 module.exports = {
   name: 'ember-cli-htmlbars-inline-precompile',
 
-  setupPreprocessorRegistry: function(type, registry) {
+  setupPreprocessorRegistry(type, registry) {
     if (type === 'parent') {
       this.parentRegistry = registry;
     }
   },
 
-  included: function(app) {
+  included() {
     this._super.included.apply(this, arguments);
 
-    var emberCLIHtmlBars = this.project.findAddonByName('ember-cli-htmlbars');
+    let emberCLIHtmlBars = this.project.findAddonByName('ember-cli-htmlbars');
 
     if(emberCLIHtmlBars && emberCLIHtmlBars.inlinePrecompilerRegistered) {
       return;
     }
 
-    app.options = app.options || {};
-    app.options.babel = app.options.babel || {};
-    app.options.babel.plugins = app.options.babel.plugins || [];
+    const VersionChecker = require('ember-cli-version-checker');
+    let checker = new VersionChecker(this);
+
+    let emberCLIUsesSharedBabelPlugins = checker.for('ember-cli', 'npm').lt('2.13.0-alpha.1');
+    let addonOptions = this._getAddonOptions();
+    let isProjectDependency = this.parent === this.project;
+    let babelPlugins;
+
+    if (emberCLIUsesSharedBabelPlugins && isProjectDependency) {
+      addonOptions.babel6 = addonOptions.babel6 || {};
+      babelPlugins = addonOptions.babel6.plugins = addonOptions.babel6.plugins || [];
+    } else {
+      addonOptions.babel = addonOptions.babel || {};
+      babelPlugins = addonOptions.babel.plugins = addonOptions.babel.plugins || [];
+    }
 
     // borrowed from ember-cli-htmlbars http://git.io/vJDrW
-    var projectConfig = this.projectConfig() || {};
-    var EmberENV = projectConfig.EmberENV || {};
-    var templateCompilerPath = this.templateCompilerPath();
+    let projectConfig = this.projectConfig() || {};
+    let EmberENV = projectConfig.EmberENV || {};
+    let templateCompilerPath = this.templateCompilerPath();
 
     // ensure we get a fresh templateCompilerModuleInstance per ember-addon
     // instance NOTE: this is a quick hack, and will only work as long as
@@ -44,18 +56,19 @@ module.exports = {
 
     global.EmberENV = EmberENV;
 
-    var pluginInfo = this.astPlugins();
-    var Compiler = require(templateCompilerPath);
-    var templateCompilerFullPath = require.resolve(templateCompilerPath);
-    var templateCompilerCacheKey = fs.readFileSync(templateCompilerFullPath, { encoding: 'utf-8' });
+    let pluginInfo = this.astPlugins();
+    let Compiler = require(templateCompilerPath);
+    let templateCompilerFullPath = require.resolve(templateCompilerPath);
+    let templateCompilerCacheKey = fs.readFileSync(templateCompilerFullPath, { encoding: 'utf-8' });
 
     pluginInfo.plugins.forEach(function(plugin) {
       Compiler.registerPlugin('ast', plugin);
     });
 
-    var PrecompileInlineHTMLBarsPlugin = HTMLBarsInlinePrecompilePlugin(Compiler.precompile, {
-      cacheKey: [templateCompilerCacheKey].concat(pluginInfo.cacheKeys).join('|')
-    });
+    let precompile = Compiler.precompile;
+
+    precompile.baseDir = () => __dirname;
+    precompile.cacheKey = () => [templateCompilerCacheKey].concat(pluginInfo.cacheKeys).join('|');
 
     delete require.cache[templateCompilerPath];
     delete global.Ember;
@@ -64,28 +77,32 @@ module.exports = {
     // add the HTMLBarsInlinePrecompilePlugin to the list of plugins used by
     // the `ember-cli-babel` addon
     if (!this._registeredWithBabel) {
-      app.options.babel.plugins.push(PrecompileInlineHTMLBarsPlugin);
+      babelPlugins.push([HTMLBarsInlinePrecompilePlugin, { precompile  }]);
       this._registeredWithBabel = true;
     }
   },
 
-  // from ember-cli-htmlbars :(
-  astPlugins: function() {
-    var pluginWrappers = this.parentRegistry.load('htmlbars-ast-plugin');
-    var plugins = [];
-    var cacheKeys = [];
+  _getAddonOptions() {
+    return (this.parent && this.parent.options) || (this.app && this.app.options) || {};
+  },
 
-    for (var i = 0; i < pluginWrappers.length; i++) {
-      var wrapper = pluginWrappers[i];
+  // from ember-cli-htmlbars :(
+  astPlugins() {
+    let pluginWrappers = this.parentRegistry.load('htmlbars-ast-plugin');
+    let plugins = [];
+    let cacheKeys = [];
+
+    for (let i = 0; i < pluginWrappers.length; i++) {
+      let wrapper = pluginWrappers[i];
 
       plugins.push(wrapper.plugin);
 
       if (typeof wrapper.baseDir === 'function') {
-        var pluginHashForDep = hashForDep(wrapper.baseDir());
+        let pluginHashForDep = hashForDep(wrapper.baseDir());
         cacheKeys.push(pluginHashForDep);
       } else {
         // support for ember-cli < 2.2.0
-        var log = this.ui.writeDeprecateLine || this.ui.writeLine;
+        let log = this.ui.writeDeprecateLine || this.ui.writeLine;
 
         log.call(this.ui, 'ember-cli-htmlbars-inline-precompile is opting out of caching due to an AST plugin that does not provide a caching strategy: `' + wrapper.name + '`.');
         cacheKeys.push((new Date()).getTime() + '|' + Math.random());
@@ -99,16 +116,16 @@ module.exports = {
   },
 
   // borrowed from ember-cli-htmlbars http://git.io/vJDrW
-  projectConfig: function () {
+  projectConfig() {
     return this.project.config(process.env.EMBER_ENV);
   },
 
   // borrowed from ember-cli-htmlbars http://git.io/vJDrw
-  templateCompilerPath: function() {
-    var config = this.projectConfig();
-    var templateCompilerPath = config['ember-cli-htmlbars'] && config['ember-cli-htmlbars'].templateCompilerPath;
+  templateCompilerPath() {
+    let config = this.projectConfig();
+    let templateCompilerPath = config['ember-cli-htmlbars'] && config['ember-cli-htmlbars'].templateCompilerPath;
 
-    var ember = this.project.findAddonByName('ember-source');
+    let ember = this.project.findAddonByName('ember-source');
     if (ember) {
       return ember.absolutePaths.templateCompiler;
     } else if (!templateCompilerPath) {
