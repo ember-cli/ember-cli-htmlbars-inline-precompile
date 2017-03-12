@@ -13,7 +13,7 @@
   },
   "repository": "https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile",
   "engines": {
-    "node": ">= 0.12"
+    "node": ">= 4"
   },
   "author": "Clemens Müller <cmueller.418@gmail.com>",
   "license": "MIT",
