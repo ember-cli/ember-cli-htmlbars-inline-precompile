@@ -24,9 +24,21 @@ module.exports = {
       return;
     }
 
+    const VersionChecker = require('ember-cli-version-checker');
+    let checker = new VersionChecker(this);
+
+    let emberCLIUsesSharedBabelPlugins = checker.for('ember-cli', 'npm').lt('2.13.0-alpha.1');
     let addonOptions = this._getAddonOptions();
-    addonOptions.babel = addonOptions.babel || {};
-    addonOptions.babel.plugins = addonOptions.babel.plugins || [];
+    let isProjectDependency = this.parent === this.project;
+    let babelPlugins;
+
+    if (emberCLIUsesSharedBabelPlugins && isProjectDependency) {
+      addonOptions.babel6 = addonOptions.babel6 || {};
+      babelPlugins = addonOptions.babel6.plugins = addonOptions.babel6.plugins || [];
+    } else {
+      addonOptions.babel = addonOptions.babel || {};
+      babelPlugins = addonOptions.babel.plugins = addonOptions.babel.plugins || [];
+    }
 
     // borrowed from ember-cli-htmlbars http://git.io/vJDrW
     let projectConfig = this.projectConfig() || {};
@@ -55,7 +67,7 @@ module.exports = {
 
     let precompile = Compiler.precompile;
 
-    precompile.baseDir = () => path.dirname(templateCompilerFullPath);
+    precompile.baseDir = () => __dirname;
     precompile.cacheKey = () => [templateCompilerCacheKey].concat(pluginInfo.cacheKeys).join('|');
 
     delete require.cache[templateCompilerPath];
@@ -65,7 +77,7 @@ module.exports = {
     // add the HTMLBarsInlinePrecompilePlugin to the list of plugins used by
     // the `ember-cli-babel` addon
     if (!this._registeredWithBabel) {
-      addonOptions.babel.plugins.push([HTMLBarsInlinePrecompilePlugin, { precompile: Compiler.precompile  }]);
+      babelPlugins.push([HTMLBarsInlinePrecompilePlugin, { precompile  }]);
       this._registeredWithBabel = true;
     }
   },
