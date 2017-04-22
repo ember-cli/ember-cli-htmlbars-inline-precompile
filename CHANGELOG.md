@@ -1,5 +1,15 @@
 # Change Log
 
+## [v0.4.0](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/tree/v0.4.0) (2017-04-22)
+[Full Changelog](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/compare/v0.4.0-beta.2...v0.4.0)
+
+**Closed issues:**
+
+- Compilation inside ember controller [\#70](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/issues/70)
+
+## [v0.4.0-beta.2](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/tree/v0.4.0-beta.2) (2017-03-13)
+[Full Changelog](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/compare/v0.4.0-beta.1...v0.4.0-beta.2)
+
 ## [v0.4.0-beta.1](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/tree/v0.4.0-beta.1) (2017-03-12)
 [Full Changelog](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/compare/v0.3.6...v0.4.0-beta.1)
 
