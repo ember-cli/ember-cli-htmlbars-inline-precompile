@@ -5,9 +5,22 @@ const path = require('path');
 const fs = require('fs');
 const hashForDep = require('hash-for-dep');
 const HTMLBarsInlinePrecompilePlugin = require('babel-plugin-htmlbars-inline-precompile');
+const VersionChecker = require('ember-cli-version-checker');
+const SilentError = require('silent-error');
 
 module.exports = {
   name: 'ember-cli-htmlbars-inline-precompile',
+
+  init() {
+    this._super.init.apply(this, arguments);
+
+    let checker = new VersionChecker(this);
+    let hasIncorrectBabelVersion = checker.for('ember-cli-babel', 'npm').lt('6.0.0-alpha.1');
+
+    if (hasIncorrectBabelVersion) {
+      throw new SilentError(`ember-cli-htmlbars-inline-precompile@0.4 requires the host to use ember-cli-babel@6. To use ember-cli-babel@5 please downgrade ember-cli-htmlbars-inline-precompile to 0.3.`);
+    }
+  },
 
   setupPreprocessorRegistry(type, registry) {
     if (type === 'parent') {
@@ -24,7 +37,6 @@ module.exports = {
       return;
     }
 
-    const VersionChecker = require('ember-cli-version-checker');
     let checker = new VersionChecker(this);
 
     let emberCLIUsesSharedBabelPlugins = checker.for('ember-cli', 'npm').lt('2.13.0-alpha.1');
