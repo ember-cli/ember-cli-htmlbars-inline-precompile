@@ -1,5 +1,22 @@
 # Change Log
 
+## [v0.4.1](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/tree/v0.4.1) (2017-05-02)
+[Full Changelog](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/compare/v0.3.8...v0.4.1)
+
+**Merged pull requests:**
+
+- Add helpful messaging when used in the wrong context. [\#72](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/72) ([rwjblue](https://github.com/rwjblue))
+
+## [v0.3.8](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/tree/v0.3.8) (2017-05-02)
+[Full Changelog](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/compare/v0.3.7...v0.3.8)
+
+## [v0.3.7](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/tree/v0.3.7) (2017-05-02)
+[Full Changelog](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/compare/v0.4.0...v0.3.7)
+
+**Merged pull requests:**
+
+- Provide helpful messaging when using 0.3 with Babel 6. [\#73](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/73) ([rwjblue](https://github.com/rwjblue))
+
 ## [v0.4.0](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/tree/v0.4.0) (2017-04-22)
 [Full Changelog](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/compare/v0.4.0-beta.2...v0.4.0)
 
