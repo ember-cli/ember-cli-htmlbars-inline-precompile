@@ -15,7 +15,7 @@ module.exports = {
     this._super.init.apply(this, arguments);
 
     var checker = new VersionChecker(this);
-    var hasCorrectBabelVersion = checker.for('ember-cli-babel').lt('6.0.0-alpha.1');
+    var hasCorrectBabelVersion = checker.for('ember-cli-babel', 'npm').lt('6.0.0-alpha.1');
 
     if (!hasCorrectBabelVersion) {
       throw new SilentError('ember-cli-htmlbars-inline-precompile@0.3 requires the host to use ember-cli-babel@5. To use ember-cli-babel@6 please upgrade ember-cli-htmlbars-inline-precompile to 0.4.');
