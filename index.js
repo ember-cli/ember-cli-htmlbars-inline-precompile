@@ -5,9 +5,22 @@ var path = require('path');
 var fs = require('fs');
 var hashForDep = require('hash-for-dep');
 var HTMLBarsInlinePrecompilePlugin = require('babel-plugin-htmlbars-inline-precompile');
+var VersionChecker = require('ember-cli-version-checker');
+var SilentError = require('silent-error');
 
 module.exports = {
   name: 'ember-cli-htmlbars-inline-precompile',
+
+  init() {
+    this._super.init.apply(this, arguments);
+
+    var checker = new VersionChecker(this);
+    var hasCorrectBabelVersion = checker.for('ember-cli-babel').lt('6.0.0-alpha.1');
+
+    if (!hasCorrectBabelVersion) {
+      throw new SilentError('ember-cli-htmlbars-inline-precompile@0.3 requires the host to use ember-cli-babel@5. To use ember-cli-babel@6 please upgrade ember-cli-htmlbars-inline-precompile to 0.4.');
+    }
+  },
 
   setupPreprocessorRegistry: function(type, registry) {
     if (type === 'parent') {
