@@ -1,5 +1,21 @@
 # Change Log
 
+## [v0.4.2](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/tree/v0.4.2) (2017-05-03)
+[Full Changelog](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/compare/v0.4.1...v0.4.2)
+
+**Implemented enhancements:**
+
+- CI: Use "auto-dist-tag" for deployment [\#77](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/77) ([Turbo87](https://github.com/Turbo87))
+
+**Closed issues:**
+
+- TypeError: Cannot read property 'apply' of undefined... [\#75](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/issues/75)
+- Cannot read property 'lt' of undefined [\#74](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/issues/74)
+
+**Merged pull requests:**
+
+- Fixes init call so this works in older versions of ember-cli [\#76](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/76) ([MiguelMadero](https://github.com/MiguelMadero))
+
 ## [v0.4.1](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/tree/v0.4.1) (2017-05-02)
 [Full Changelog](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/compare/v0.3.8...v0.4.1)
 
