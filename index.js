@@ -12,7 +12,7 @@ module.exports = {
   name: 'ember-cli-htmlbars-inline-precompile',
 
   init() {
-    this._super.init.apply(this, arguments);
+    this._super.init && this._super.init.apply(this, arguments);
 
     var checker = new VersionChecker(this);
     var hasCorrectBabelVersion = checker.for('ember-cli-babel', 'npm').lt('6.0.0-alpha.1');
