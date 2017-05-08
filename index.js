@@ -15,7 +15,7 @@ module.exports = {
   init() {
     this._super.init && this._super.init.apply(this, arguments);
 
-    let babelPath = resolve.sync('ember-cli-babel/package', { basedir: this.parent.root });
+    let babelPath = resolve.sync('ember-cli-babel/package.json', { basedir: this.parent.root });
     let babelVersion = require(babelPath).version;
 
     var hasCorrectBabelVersion = semver.lt(babelVersion, '6.0.0-alpha.1');
