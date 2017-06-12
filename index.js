@@ -2,9 +2,6 @@
 'use strict';
 
 const path = require('path');
-const fs = require('fs');
-const hashForDep = require('hash-for-dep');
-const HTMLBarsInlinePrecompilePlugin = require('babel-plugin-htmlbars-inline-precompile');
 const VersionChecker = require('ember-cli-version-checker');
 const SilentError = require('silent-error');
 
@@ -57,43 +54,29 @@ module.exports = {
     let EmberENV = projectConfig.EmberENV || {};
     let templateCompilerPath = this.templateCompilerPath();
 
-    // ensure we get a fresh templateCompilerModuleInstance per ember-addon
-    // instance NOTE: this is a quick hack, and will only work as long as
-    // templateCompilerPath is a single file bundle
-    //
-    // (╯°□°）╯︵ ɹǝqɯǝ
-    //
-    // we will also fix this in ember for future releases
-    delete require.cache[templateCompilerPath];
-
     // do a full clone of the EmberENV (it is guaranteed to be structured
     // cloneable) to prevent ember-template-compiler.js from mutating
     // the shared global config
     let clonedEmberENV = JSON.parse(JSON.stringify(EmberENV));
     global.EmberENV = clonedEmberENV;
 
-    let pluginInfo = this.astPlugins();
-    let Compiler = require(templateCompilerPath);
-    let templateCompilerFullPath = require.resolve(templateCompilerPath);
-    let templateCompilerCacheKey = fs.readFileSync(templateCompilerFullPath, { encoding: 'utf-8' });
+    let pluginPaths = this.pluginPaths();
 
-    pluginInfo.plugins.forEach(function(plugin) {
-      Compiler.registerPlugin('ast', plugin);
-    });
-
-    let precompile = Compiler.precompile;
-
-    precompile.baseDir = () => __dirname;
-    precompile.cacheKey = () => [templateCompilerCacheKey].concat(pluginInfo.cacheKeys).join('|');
-
-    delete require.cache[templateCompilerPath];
     delete global.Ember;
     delete global.EmberENV;
 
     // add the HTMLBarsInlinePrecompilePlugin to the list of plugins used by
     // the `ember-cli-babel` addon
     if (!this._registeredWithBabel) {
-      babelPlugins.push([HTMLBarsInlinePrecompilePlugin, { precompile  }]);
+      // use parallel API
+      babelPlugins.push([
+        'htmlbars-inline-precompile',
+        path.resolve(__dirname, 'require-from-worker'),
+        {
+          templateCompilerPath,
+          pluginPaths,
+        }
+      ]);
       this._registeredWithBabel = true;
     }
   },
@@ -102,33 +85,17 @@ module.exports = {
     return (this.parent && this.parent.options) || (this.app && this.app.options) || {};
   },
 
-  // from ember-cli-htmlbars :(
-  astPlugins() {
-    let pluginWrappers = this.parentRegistry.load('htmlbars-ast-plugin');
-    let plugins = [];
-    let cacheKeys = [];
+  // use baseDir to find the paths to the dependent plugins
+  pluginPaths: function() {
+    var pluginWrappers = this.parentRegistry.load('htmlbars-ast-plugin');
 
-    for (let i = 0; i < pluginWrappers.length; i++) {
-      let wrapper = pluginWrappers[i];
-
-      plugins.push(wrapper.plugin);
-
+    return pluginWrappers.map(function(wrapper) {
       if (typeof wrapper.baseDir === 'function') {
-        let pluginHashForDep = hashForDep(wrapper.baseDir());
-        cacheKeys.push(pluginHashForDep);
+        return wrapper.baseDir();
       } else {
-        // support for ember-cli < 2.2.0
-        let log = this.ui.writeDeprecateLine || this.ui.writeLine;
-
-        log.call(this.ui, 'ember-cli-htmlbars-inline-precompile is opting out of caching due to an AST plugin that does not provide a caching strategy: `' + wrapper.name + '`.');
-        cacheKeys.push((new Date()).getTime() + '|' + Math.random());
+        return wrapper.baseDir;
       }
-    }
-
-    return {
-      plugins: plugins,
-      cacheKeys: cacheKeys
-    };
+    });
   },
 
   // borrowed from ember-cli-htmlbars http://git.io/vJDrW
