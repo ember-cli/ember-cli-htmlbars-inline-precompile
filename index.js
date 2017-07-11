@@ -69,14 +69,16 @@ module.exports = {
     // the `ember-cli-babel` addon
     if (!this._registeredWithBabel) {
       // use parallel API
-      babelPlugins.push([
-        'htmlbars-inline-precompile',
-        path.resolve(__dirname, 'require-from-worker'),
-        {
-          templateCompilerPath,
-          pluginPaths,
+      babelPlugins.push({
+        _parallelBabel: {
+          requireFile: path.resolve(__dirname, 'require-from-worker'),
+          buildUsing: 'build',
+          params: {
+            templateCompilerPath,
+            pluginPaths,
+          }
         }
-      ]);
+      });
       this._registeredWithBabel = true;
     }
   },
@@ -87,7 +89,7 @@ module.exports = {
 
   // use baseDir to find the paths to the dependent plugins
   pluginPaths: function() {
-    var pluginWrappers = this.parentRegistry.load('htmlbars-ast-plugin');
+    const pluginWrappers = this.parentRegistry.load('htmlbars-ast-plugin');
 
     return pluginWrappers.map(function(wrapper) {
       if (typeof wrapper.baseDir === 'function') {
