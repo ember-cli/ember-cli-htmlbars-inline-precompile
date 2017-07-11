@@ -4,7 +4,7 @@
 const fs = require('fs');
 const hashForDep = require('hash-for-dep');
 const HTMLBarsInlinePrecompilePlugin = require('babel-plugin-htmlbars-inline-precompile');
-const Registry = require('ember-cli-preprocess-registry'); // TODO package.json
+const Registry = require('ember-cli-preprocess-registry');
 
 module.exports = {
   name: 'htmlbars-inline-precompile',

@@ -1,5 +1,12 @@
 /*jshint node:true*/
+var os = require('os');
+var path = require('path');
+var username = require('username-sync')();
+var broccoliDiskCache = path.join(os.tmpdir(), username);
+
 module.exports = {
+  // clear broccoli async disk cache between scenarios for better isolation
+  command: 'rm -rf ' + broccoliDiskCache + '; ember test',
   scenarios: [
     {
       name: 'ember-1.13',
