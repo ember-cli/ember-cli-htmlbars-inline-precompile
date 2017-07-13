@@ -60,7 +60,7 @@ module.exports = {
     let clonedEmberENV = JSON.parse(JSON.stringify(EmberENV));
     global.EmberENV = clonedEmberENV;
 
-    let pluginPaths = this.pluginPaths();
+    let pluginParallelSpecs = this.pluginParallelSpecs();
 
     delete global.Ember;
     delete global.EmberENV;
@@ -68,6 +68,7 @@ module.exports = {
     // add the HTMLBarsInlinePrecompilePlugin to the list of plugins used by
     // the `ember-cli-babel` addon
     if (!this._registeredWithBabel) {
+      // TODO: check if all dependent plugins are parallelizable
       // use parallel API
       babelPlugins.push({
         _parallelBabel: {
@@ -75,7 +76,7 @@ module.exports = {
           buildUsing: 'build',
           params: {
             templateCompilerPath,
-            pluginPaths,
+            pluginParallelSpecs
           }
         }
       });
@@ -87,17 +88,10 @@ module.exports = {
     return (this.parent && this.parent.options) || (this.app && this.app.options) || {};
   },
 
-  // use baseDir to find the paths to the dependent plugins
-  pluginPaths: function() {
+  // return an array of the 'parallelBabel' property for each registered htmlbars-ast-plugin
+  pluginParallelSpecs() {
     const pluginWrappers = this.parentRegistry.load('htmlbars-ast-plugin');
-
-    return pluginWrappers.map(function(wrapper) {
-      if (typeof wrapper.baseDir === 'function') {
-        return wrapper.baseDir();
-      } else {
-        return wrapper.baseDir;
-      }
-    });
+    return pluginWrappers.map((wrapper) => wrapper.parallelBabel);
   },
 
   // borrowed from ember-cli-htmlbars http://git.io/vJDrW
