@@ -9,6 +9,8 @@ module.exports = {
   build(options) {
     let templateCompilerPath = options.templateCompilerPath;
 
+    // TODO need to refactor this stuff into some shared lib file
+
     // ensure we get a fresh templateCompilerModuleInstance per ember-addon
     // instance NOTE: this is a quick hack, and will only work as long as
     // templateCompilerPath is a single file bundle
@@ -22,7 +24,7 @@ module.exports = {
 
     let templateCompilerCacheKey = fs.readFileSync(templateCompilerFullPath, { encoding: 'utf-8' });
 
-    const dependentPluginInfo = this.setupDependentPlugins(options.pluginParallelSpecs);
+    const dependentPluginInfo = this.setupDependentPlugins(options.parallelConfig);
 
     dependentPluginInfo.plugins.forEach((plugin) => Compiler.registerPlugin('ast', plugin));
 
@@ -35,13 +37,13 @@ module.exports = {
     return [HTMLBarsInlinePrecompilePlugin, { precompile }];
   },
 
-  setupDependentPlugins(pluginParallelSpecs) {
+  setupDependentPlugins(parallelConfig) {
     const plugins = [];
     const cacheKeys = [];
 
-    pluginParallelSpecs.forEach((pluginInfo) => {
-      const plugin = require(pluginInfo.requireFile);
-      const buildInfo = plugin[pluginInfo.buildUsing](pluginInfo.params);
+    parallelConfig.forEach((config) => {
+      const plugin = require(config.requireFile);
+      const buildInfo = plugin[config.buildUsing](config.params);
 
       plugins.push(buildInfo.plugin);
 

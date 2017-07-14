@@ -5,6 +5,10 @@ const path = require('path');
 const VersionChecker = require('ember-cli-version-checker');
 const SilentError = require('silent-error');
 
+const fs = require('fs');
+const hashForDep = require('hash-for-dep');
+const HTMLBarsInlinePrecompilePlugin = require('babel-plugin-htmlbars-inline-precompile');
+
 module.exports = {
   name: 'ember-cli-htmlbars-inline-precompile',
 
@@ -49,37 +53,43 @@ module.exports = {
       babelPlugins = addonOptions.babel.plugins = addonOptions.babel.plugins || [];
     }
 
-    // borrowed from ember-cli-htmlbars http://git.io/vJDrW
-    let projectConfig = this.projectConfig() || {};
-    let EmberENV = projectConfig.EmberENV || {};
-    let templateCompilerPath = this.templateCompilerPath();
-
-    // do a full clone of the EmberENV (it is guaranteed to be structured
-    // cloneable) to prevent ember-template-compiler.js from mutating
-    // the shared global config
-    let clonedEmberENV = JSON.parse(JSON.stringify(EmberENV));
-    global.EmberENV = clonedEmberENV;
-
-    let pluginParallelSpecs = this.pluginParallelSpecs();
-
-    delete global.Ember;
-    delete global.EmberENV;
+    let pluginWrappers = this.parentRegistry.load('htmlbars-ast-plugin');
 
     // add the HTMLBarsInlinePrecompilePlugin to the list of plugins used by
     // the `ember-cli-babel` addon
     if (!this._registeredWithBabel) {
-      // TODO: check if all dependent plugins are parallelizable
-      // use parallel API
-      babelPlugins.push({
-        _parallelBabel: {
-          requireFile: path.resolve(__dirname, 'require-from-worker'),
-          buildUsing: 'build',
-          params: {
-            templateCompilerPath,
-            pluginParallelSpecs
+      let templateCompilerPath = this.templateCompilerPath();
+      let parallelConfig = this.getParallelConfig(pluginWrappers);
+      if (this.canParallelize(pluginWrappers)) {
+        // use parallel API
+        babelPlugins.push({
+          _parallelBabel: {
+            requireFile: path.resolve(__dirname, 'require-from-worker'),
+            buildUsing: 'build',
+            params: {
+              templateCompilerPath,
+              parallelConfig
+            }
           }
-        }
-      });
+        });
+      }
+      else {
+        // don't use the parallel API
+        let pluginInfo = this.astPlugins();
+        let Compiler = require(templateCompilerPath);
+        let templateCompilerFullPath = require.resolve(templateCompilerPath);
+        let templateCompilerCacheKey = fs.readFileSync(templateCompilerFullPath, { encoding: 'utf-8' });
+
+        pluginInfo.plugins.forEach(function(plugin) {
+          Compiler.registerPlugin('ast', plugin);
+        });
+
+        let precompile = Compiler.precompile;
+        precompile.baseDir = () => __dirname;
+        precompile.cacheKey = () => [templateCompilerCacheKey].concat(pluginInfo.cacheKeys).join('|');
+
+        babelPlugins.push([HTMLBarsInlinePrecompilePlugin, { precompile  }]);
+      }
       this._registeredWithBabel = true;
     }
   },
@@ -88,9 +98,42 @@ module.exports = {
     return (this.parent && this.parent.options) || (this.app && this.app.options) || {};
   },
 
-  // return an array of the 'parallelBabel' property for each registered htmlbars-ast-plugin
-  pluginParallelSpecs() {
-    const pluginWrappers = this.parentRegistry.load('htmlbars-ast-plugin');
+  // from ember-cli-htmlbars :(
+  astPlugins() {
+    let pluginWrappers = this.parentRegistry.load('htmlbars-ast-plugin');
+    let plugins = [];
+    let cacheKeys = [];
+
+    for (let i = 0; i < pluginWrappers.length; i++) {
+      let wrapper = pluginWrappers[i];
+
+      plugins.push(wrapper.plugin);
+
+      if (typeof wrapper.baseDir === 'function') {
+        let pluginHashForDep = hashForDep(wrapper.baseDir());
+        cacheKeys.push(pluginHashForDep);
+      } else {
+        // support for ember-cli < 2.2.0
+        let log = this.ui.writeDeprecateLine || this.ui.writeLine;
+
+        log.call(this.ui, 'ember-cli-htmlbars-inline-precompile is opting out of caching due to an AST plugin that does not provide a caching strategy: `' + wrapper.name + '`.');
+        cacheKeys.push((new Date()).getTime() + '|' + Math.random());
+      }
+    }
+
+    return {
+      plugins: plugins,
+      cacheKeys: cacheKeys
+    };
+  },
+
+  // verify that each registered ast plugin can be parallelized
+  canParallelize(pluginWrappers) {
+    return pluginWrappers.every((wrapper) => wrapper.parallelBabel !== undefined);
+  },
+
+  // return an array of the 'parallelBabel' object for each registered htmlbars-ast-plugin
+  getParallelConfig(pluginWrappers) {
     return pluginWrappers.map((wrapper) => wrapper.parallelBabel);
   },
 
