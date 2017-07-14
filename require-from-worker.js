@@ -9,8 +9,6 @@ module.exports = {
   build(options) {
     let templateCompilerPath = options.templateCompilerPath;
 
-    // TODO need to refactor this stuff into some shared lib file
-
     // ensure we get a fresh templateCompilerModuleInstance per ember-addon
     // instance NOTE: this is a quick hack, and will only work as long as
     // templateCompilerPath is a single file bundle
