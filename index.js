@@ -77,6 +77,12 @@ module.exports = {
       }
       else {
         _logger.debug('NOT using parallel API with broccoli-babel-transpiler');
+        let blockingPlugins = pluginWrappers.map((wrapper) => {
+          if (wrapper.parallelBabel === undefined) {
+            return wrapper.name;
+          }
+        }).filter(Boolean);
+        _logger.debug('Prevented by these plugins: ' + blockingPlugins);
 
         // borrowed from ember-cli-htmlbars http://git.io/vJDrW
         let projectConfig = this.projectConfig() || {};
