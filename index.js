@@ -2,9 +2,9 @@
 'use strict';
 
 const path = require('path');
-const fs = require('fs');
 const hashForDep = require('hash-for-dep');
-const HTMLBarsInlinePrecompilePlugin = require('babel-plugin-htmlbars-inline-precompile');
+// const HTMLBarsInlinePrecompilePlugin = require('babel-plugin-htmlbars-inline-precompile');
+const AstPlugins = require('./lib/ast-plugins');
 const VersionChecker = require('ember-cli-version-checker');
 const SilentError = require('silent-error');
 const debugGenerator = require('heimdalljs-logger');
@@ -66,7 +66,7 @@ module.exports = {
         _logger.debug('using parallel API with broccoli-babel-transpiler');
         babelPlugins.push({
           _parallelBabel: {
-            requireFile: path.resolve(__dirname, 'require-from-worker'),
+            requireFile: path.resolve(__dirname, 'lib/require-from-worker'),
             buildUsing: 'build',
             params: {
               templateCompilerPath,
@@ -84,40 +84,12 @@ module.exports = {
         }).filter(Boolean);
         _logger.debug('Prevented by these plugins: ' + blockingPlugins);
 
-        // borrowed from ember-cli-htmlbars http://git.io/vJDrW
-        let projectConfig = this.projectConfig() || {};
-        let EmberENV = projectConfig.EmberENV || {};
-        let templateCompilerPath = this.templateCompilerPath();
-
-        // ensure we get a fresh templateCompilerModuleInstance per ember-addon
-        // instance NOTE: this is a quick hack, and will only work as long as
-        // templateCompilerPath is a single file bundle
-        //
-        // (╯°□°）╯︵ ɹǝqɯǝ
-        //
-        // we will also fix this in ember for future releases
-        delete require.cache[templateCompilerPath];
-
-        global.EmberENV = EmberENV;
-
         let pluginInfo = this.astPlugins();
-        let Compiler = require(templateCompilerPath);
-        let templateCompilerFullPath = require.resolve(templateCompilerPath);
-        let templateCompilerCacheKey = fs.readFileSync(templateCompilerFullPath, { encoding: 'utf-8' });
-
-        pluginInfo.plugins.forEach((plugin) => {
-          Compiler.registerPlugin('ast', plugin);
+        let htmlBarsPlugin = AstPlugins.setup(pluginInfo, {
+          projectConfig: this.projectConfig(),
+          templateCompilerPath: this.templateCompilerPath(),
         });
-
-        let precompile = Compiler.precompile;
-        precompile.baseDir = () => __dirname;
-        precompile.cacheKey = () => [templateCompilerCacheKey].concat(pluginInfo.cacheKeys).join('|');
-
-        delete require.cache[templateCompilerPath];
-        delete global.Ember;
-        delete global.EmberENV;
-
-        babelPlugins.push([HTMLBarsInlinePrecompilePlugin, { precompile  }]);
+        babelPlugins.push(htmlBarsPlugin);
       }
       this._registeredWithBabel = true;
     }

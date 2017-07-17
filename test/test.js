@@ -70,7 +70,7 @@ describe('getParallelConfig()', function() {
 describe('included()', function() {
   let parent;
   let registry;
-  let expectedRequireFilePath = path.resolve(__dirname, '../require-from-worker');
+  let expectedRequireFilePath = path.resolve(__dirname, '../lib/require-from-worker');
   let expectedTemplateCompilerPath = path.resolve(__dirname, '../bower_components/ember/ember-template-compiler');
   let testBaseDir = () => path.resolve(__dirname, '..');
   let configuredPlugins;
