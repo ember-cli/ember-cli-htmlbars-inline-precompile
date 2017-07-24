@@ -3,7 +3,6 @@
 
 const path = require('path');
 const hashForDep = require('hash-for-dep');
-// const HTMLBarsInlinePrecompilePlugin = require('babel-plugin-htmlbars-inline-precompile');
 const AstPlugins = require('./lib/ast-plugins');
 const VersionChecker = require('ember-cli-version-checker');
 const SilentError = require('silent-error');
