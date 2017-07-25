@@ -85,6 +85,7 @@ describe('included()', function() {
     baseDir: testBaseDir,
     parallelBabel: dependentParallelInfo,
   };
+
   let nonParallelPlugin = {
     name: 'some-regular-plugin',
     plugin: 'some object',
@@ -135,6 +136,12 @@ describe('included()', function() {
       expect(_parallelBabel.params.parallelConfig).to.eql([]);
       expect(_parallelBabel.params.templateCompilerPath).to.eql(expectedTemplateCompilerPath);
     });
+
+    it('should have baseDir()', function() {
+      expect(configuredPlugins.length).to.eql(1);
+      expect(typeof configuredPlugins[0].baseDir).to.eql('function');
+      expect(configuredPlugins[0].baseDir()).to.eql(testBaseDir());
+    });
   });
 
   describe('1 parallel plugin', function() {
@@ -153,6 +160,12 @@ describe('included()', function() {
       expect(typeof _parallelBabel.params).to.eql('object');
       expect(_parallelBabel.params.parallelConfig).to.eql([ dependentParallelInfo ]);
       expect(_parallelBabel.params.templateCompilerPath).to.eql(expectedTemplateCompilerPath);
+    });
+
+    it('should have baseDir()', function() {
+      expect(configuredPlugins.length).to.eql(1);
+      expect(typeof configuredPlugins[0].baseDir).to.eql('function');
+      expect(configuredPlugins[0].baseDir()).to.eql(testBaseDir());
     });
   });
 
@@ -176,6 +189,7 @@ describe('included()', function() {
       let pluginParams = configuredPlugins[0][1];
       expect(typeof pluginParams.precompile).to.eql('function');
       expect(typeof pluginParams.precompile.baseDir).to.eql('function');
+      expect(pluginParams.precompile.baseDir()).to.eql(testBaseDir());
       expect(typeof pluginParams.precompile.cacheKey).to.eql('function');
     });
   });
@@ -201,6 +215,7 @@ describe('included()', function() {
       let pluginParams = configuredPlugins[0][1];
       expect(typeof pluginParams.precompile).to.eql('function');
       expect(typeof pluginParams.precompile.baseDir).to.eql('function');
+      expect(pluginParams.precompile.baseDir()).to.eql(testBaseDir());
       expect(typeof pluginParams.precompile.cacheKey).to.eql('function');
     });
   });
