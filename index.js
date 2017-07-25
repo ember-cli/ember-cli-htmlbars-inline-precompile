@@ -71,7 +71,8 @@ module.exports = {
               templateCompilerPath,
               parallelConfig
             }
-          }
+          },
+          baseDir: () => __dirname,
         });
       }
       else {
