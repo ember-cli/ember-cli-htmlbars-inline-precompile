@@ -9,7 +9,7 @@ var resolve = require('resolve');
 var semver = require('semver');
 var debugGenerator = require('heimdalljs-logger');
 
-const _logger = debugGenerator('ember-cli-htmlbars-inline-precompile');
+var _logger = debugGenerator('ember-cli-htmlbars-inline-precompile');
 
 module.exports = {
   name: 'ember-cli-htmlbars-inline-precompile',
@@ -63,6 +63,9 @@ module.exports = {
               templateCompilerPath: templateCompilerPath,
               parallelConfig: parallelConfig
             }
+          },
+          baseDir: function() {
+            return __dirname;
           }
         });
       }

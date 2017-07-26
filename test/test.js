@@ -73,6 +73,7 @@ describe('included()', function() {
   let expectedRequireFilePath = path.resolve(__dirname, '../lib/require-from-worker');
   let expectedTemplateCompilerPath = path.resolve(__dirname, '../bower_components/ember/ember-template-compiler');
   let testBaseDir = () => path.resolve(__dirname, '..');
+  let pluginBaseDir = () => path.resolve(__dirname, '../node_modules/babel-plugin-htmlbars-inline-precompile')
   let configuredPlugins;
   let dependentParallelInfo = {
     requireFile: 'some/file/path',
@@ -135,6 +136,12 @@ describe('included()', function() {
       expect(_parallelBabel.params.parallelConfig).to.eql([]);
       expect(_parallelBabel.params.templateCompilerPath).to.eql(expectedTemplateCompilerPath);
     });
+
+    it('should have baseDir()', function() {
+      expect(configuredPlugins.length).to.eql(1);
+      expect(typeof configuredPlugins[0].baseDir).to.eql('function');
+      expect(configuredPlugins[0].baseDir()).to.eql(testBaseDir());
+    });
   });
 
   describe('1 parallel plugin', function() {
@@ -153,6 +160,12 @@ describe('included()', function() {
       expect(typeof _parallelBabel.params).to.eql('object');
       expect(_parallelBabel.params.parallelConfig).to.eql([ dependentParallelInfo ]);
       expect(_parallelBabel.params.templateCompilerPath).to.eql(expectedTemplateCompilerPath);
+    });
+
+    it('should have baseDir()', function() {
+      expect(configuredPlugins.length).to.eql(1);
+      expect(typeof configuredPlugins[0].baseDir).to.eql('function');
+      expect(configuredPlugins[0].baseDir()).to.eql(testBaseDir());
     });
   });
 
@@ -173,6 +186,7 @@ describe('included()', function() {
       let pluginObject = configuredPlugins[0];
       expect(typeof pluginObject).to.eql('function');
       expect(typeof pluginObject.baseDir).to.eql('function');
+      expect(pluginObject.baseDir()).to.eql(pluginBaseDir());
       expect(typeof pluginObject.cacheKey).to.eql('function');
     });
   });
@@ -195,6 +209,7 @@ describe('included()', function() {
       let pluginObject = configuredPlugins[0];
       expect(typeof pluginObject).to.eql('function');
       expect(typeof pluginObject.baseDir).to.eql('function');
+      expect(pluginObject.baseDir()).to.eql(pluginBaseDir());
       expect(typeof pluginObject.cacheKey).to.eql('function');
     });
   });
