@@ -66,7 +66,11 @@ module.exports = {
     // we will also fix this in ember for future releases
     delete require.cache[templateCompilerPath];
 
-    global.EmberENV = EmberENV;
+    // do a full clone of the EmberENV (it is guaranteed to be structured
+    // cloneable) to prevent ember-template-compiler.js from mutating
+    // the shared global config
+    let clonedEmberENV = JSON.parse(JSON.stringify(EmberENV));
+    global.EmberENV = clonedEmberENV;
 
     let pluginInfo = this.astPlugins();
     let Compiler = require(templateCompilerPath);
