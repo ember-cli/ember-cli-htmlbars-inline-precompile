@@ -1,5 +1,45 @@
 # Change Log
 
+## [v0.4.4](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/tree/v0.4.4) (2017-07-29)
+[Full Changelog](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/compare/v0.3.12...v0.4.4)
+
+## [v0.3.12](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/tree/v0.3.12) (2017-07-29)
+[Full Changelog](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/compare/v0.4.3...v0.3.12)
+
+**Closed issues:**
+
+- Unable to build ember after updating to 0.4.1 or higher [\#86](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/issues/86)
+- Error message precompile@0.3 requires the host to use ember-cli-babel@5 despite @0.4 installed [\#78](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/issues/78)
+
+**Merged pull requests:**
+
+- Ensure ember-template-compiler does not mutate shared config object. [\#88](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/88) ([rwjblue](https://github.com/rwjblue))
+
+## [v0.4.3](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/tree/v0.4.3) (2017-05-10)
+[Full Changelog](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/compare/v0.3.11...v0.4.3)
+
+**Closed issues:**
+
+- Cannot find module 'ember-cli-babel/package' [\#82](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/issues/82)
+- 2.13 Addon Dependency Usage [\#79](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/issues/79)
+
+**Merged pull requests:**
+
+- Update ember-cli-version-checker to be aware of nested packages. [\#81](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/81) ([rwjblue](https://github.com/rwjblue))
+
+## [v0.3.11](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/tree/v0.3.11) (2017-05-08)
+[Full Changelog](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/compare/v0.3.10...v0.3.11)
+
+## [v0.3.10](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/tree/v0.3.10) (2017-05-08)
+[Full Changelog](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/compare/v0.3.9...v0.3.10)
+
+**Merged pull requests:**
+
+- Ensure that nested addons using inline precompile can use Babel 5 locally [\#80](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/80) ([rwjblue](https://github.com/rwjblue))
+
+## [v0.3.9](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/tree/v0.3.9) (2017-05-03)
+[Full Changelog](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/compare/v0.4.2...v0.3.9)
+
 ## [v0.4.2](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/tree/v0.4.2) (2017-05-03)
 [Full Changelog](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/compare/v0.4.1...v0.4.2)
 
