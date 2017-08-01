@@ -1,5 +1,6 @@
 /*jshint node:true*/
 module.exports = {
+  command: 'ember test',
   scenarios: [
     {
       name: 'ember-1.13',
