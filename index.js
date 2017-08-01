@@ -2,12 +2,14 @@
 'use strict';
 
 var path = require('path');
-var fs = require('fs');
 var hashForDep = require('hash-for-dep');
-var HTMLBarsInlinePrecompilePlugin = require('babel-plugin-htmlbars-inline-precompile');
+var AstPlugins = require('./lib/ast-plugins');
 var SilentError = require('silent-error');
 var resolve = require('resolve');
 var semver = require('semver');
+var debugGenerator = require('heimdalljs-logger');
+
+var _logger = debugGenerator('ember-cli-htmlbars-inline-precompile');
 
 module.exports = {
   name: 'ember-cli-htmlbars-inline-precompile',
@@ -44,44 +46,45 @@ module.exports = {
     app.options.babel = app.options.babel || {};
     app.options.babel.plugins = app.options.babel.plugins || [];
 
-    // borrowed from ember-cli-htmlbars http://git.io/vJDrW
-    var projectConfig = this.projectConfig() || {};
-    var EmberENV = projectConfig.EmberENV || {};
-    var templateCompilerPath = this.templateCompilerPath();
-
-    // ensure we get a fresh templateCompilerModuleInstance per ember-addon
-    // instance NOTE: this is a quick hack, and will only work as long as
-    // templateCompilerPath is a single file bundle
-    //
-    // (╯°□°）╯︵ ɹǝqɯǝ
-    //
-    // we will also fix this in ember for future releases
-    delete require.cache[templateCompilerPath];
-
-    var clonedEmberENV = JSON.parse(JSON.stringify(EmberENV));
-    global.EmberENV = clonedEmberENV;
-
-    var pluginInfo = this.astPlugins();
-    var Compiler = require(templateCompilerPath);
-    var templateCompilerFullPath = require.resolve(templateCompilerPath);
-    var templateCompilerCacheKey = fs.readFileSync(templateCompilerFullPath, { encoding: 'utf-8' });
-
-    pluginInfo.plugins.forEach(function(plugin) {
-      Compiler.registerPlugin('ast', plugin);
-    });
-
-    var PrecompileInlineHTMLBarsPlugin = HTMLBarsInlinePrecompilePlugin(Compiler.precompile, {
-      cacheKey: [templateCompilerCacheKey].concat(pluginInfo.cacheKeys).join('|')
-    });
-
-    delete require.cache[templateCompilerPath];
-    delete global.Ember;
-    delete global.EmberENV;
+    var pluginWrappers = this.parentRegistry.load('htmlbars-ast-plugin');
 
     // add the HTMLBarsInlinePrecompilePlugin to the list of plugins used by
     // the `ember-cli-babel` addon
     if (!this._registeredWithBabel) {
-      app.options.babel.plugins.push(PrecompileInlineHTMLBarsPlugin);
+      var templateCompilerPath = this.templateCompilerPath();
+      var parallelConfig = this.getParallelConfig(pluginWrappers);
+      if (this.canParallelize(pluginWrappers)) {
+        _logger.debug('using parallel API with broccoli-babel-transpiler');
+        app.options.babel.plugins.push({
+          _parallelBabel: {
+            requireFile: path.resolve(__dirname, 'lib/require-from-worker'),
+            buildUsing: 'build',
+            params: {
+              templateCompilerPath: templateCompilerPath,
+              parallelConfig: parallelConfig
+            }
+          },
+          baseDir: function() {
+            return __dirname;
+          }
+        });
+      }
+      else {
+        _logger.debug('NOT using parallel API with broccoli-babel-transpiler');
+        var blockingPlugins = pluginWrappers.map(function(wrapper) {
+          if (wrapper.parallelBabel === undefined) {
+            return wrapper.name;
+          }
+        }).filter(Boolean);
+        _logger.debug('Prevented by these plugins: ' + blockingPlugins);
+
+        var pluginInfo = this.astPlugins();
+        var htmlBarsPlugin = AstPlugins.setup(pluginInfo, {
+          projectConfig: this.projectConfig(),
+          templateCompilerPath: this.templateCompilerPath(),
+        });
+        app.options.babel.plugins.push(htmlBarsPlugin);
+      }
       this._registeredWithBabel = true;
     }
   },
@@ -113,6 +116,16 @@ module.exports = {
       plugins: plugins,
       cacheKeys: cacheKeys
     };
+  },
+
+  // verify that each registered ast plugin can be parallelized
+  canParallelize: function(pluginWrappers) {
+    return pluginWrappers.every(function(wrapper) { return wrapper.parallelBabel !== undefined; });
+  },
+
+  // return an array of the 'parallelBabel' object for each registered htmlbars-ast-plugin
+  getParallelConfig: function(pluginWrappers) {
+    return pluginWrappers.map(function(wrapper) { return wrapper.parallelBabel; });
   },
 
   // borrowed from ember-cli-htmlbars http://git.io/vJDrW
