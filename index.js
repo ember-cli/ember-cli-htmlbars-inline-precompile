@@ -14,7 +14,7 @@ var _logger = debugGenerator('ember-cli-htmlbars-inline-precompile');
 module.exports = {
   name: 'ember-cli-htmlbars-inline-precompile',
 
-  init() {
+  init: function() {
     this._super.init && this._super.init.apply(this, arguments);
 
     let babelPath = resolve.sync('ember-cli-babel/package.json', { basedir: this.parent.root });
