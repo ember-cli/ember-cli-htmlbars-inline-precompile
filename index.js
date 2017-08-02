@@ -17,10 +17,10 @@ module.exports = {
     this._super.init && this._super.init.apply(this, arguments);
 
     let checker = new VersionChecker(this);
-    let hasIncorrectBabelVersion = checker.for('ember-cli-babel', 'npm').lt('6.7.0');
+    let hasIncorrectBabelVersion = checker.for('ember-cli-babel', 'npm').lt('6.7.1');
 
     if (hasIncorrectBabelVersion) {
-      throw new SilentError(`ember-cli-htmlbars-inline-precompile v1.0.0 and above require the ember-cli-babel v6.7.0 or above. To use ember-cli-babel v5.x please downgrade ember-cli-htmlbars-inline-precompile to v0.3.`);
+      throw new SilentError(`ember-cli-htmlbars-inline-precompile v1.0.0 and above require the ember-cli-babel v6.7.1 or above. To use ember-cli-babel v5.x please downgrade ember-cli-htmlbars-inline-precompile to v0.3.`);
     }
   },
 
