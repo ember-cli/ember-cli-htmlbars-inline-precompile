@@ -1,5 +1,6 @@
 # ember-cli-htmlbars-inline-precompile
 
+[![npm version](https://badge.fury.io/js/ember-cli-htmlbars-inline-precompile.svg)](https://badge.fury.io/js/ember-cli-htmlbars-inline-precompile)
 [![Build Status](https://travis-ci.org/ember-cli/ember-cli-htmlbars-inline-precompile.svg?branch=master)](https://travis-ci.org/ember-cli/ember-cli-htmlbars-inline-precompile)
 [![Ember Observer Score](http://emberobserver.com/badges/ember-cli-htmlbars-inline-precompile.svg)](http://emberobserver.com/addons/ember-cli-htmlbars-inline-precompile)
 [![Dependency Status](https://david-dm.org/ember-cli/ember-cli-htmlbars-inline-precompile.svg)](https://david-dm.org/ember-cli/ember-cli-htmlbars-inline-precompile)
