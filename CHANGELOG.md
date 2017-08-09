@@ -1,5 +1,49 @@
 # Change Log
 
+## [v1.0.2](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/tree/v1.0.2) (2017-08-09)
+[Full Changelog](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/compare/v1.0.1...v1.0.2)
+
+**Closed issues:**
+
+- Cache does not invalidate when ember version changes. [\#95](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/issues/95)
+
+**Merged pull requests:**
+
+- Fix caching for parallel plugin objects [\#97](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/97) ([mikrostew](https://github.com/mikrostew))
+- add npm badge [\#94](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/94) ([kellyselden](https://github.com/kellyselden))
+
+## [v1.0.1](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/tree/v1.0.1) (2017-08-06)
+[Full Changelog](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/compare/v0.3.13...v1.0.1)
+
+**Fixed bugs:**
+
+- Adjust "ember-cli-babel" version check [\#91](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/91) ([Turbo87](https://github.com/Turbo87))
+
+**Closed issues:**
+
+- With 1.0.0 "broccoli-babel-transpiler is opting out of caching due to a plugin that does not provide a caching strategy: `\(\) =\> \_\_dirname`." [\#89](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/issues/89)
+- Syntax error/build broken in versions 0.3.7 and newer [\#84](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/issues/84)
+
+**Merged pull requests:**
+
+- update `ember-cli-babel` version check and dependencies [\#93](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/93) ([mikrostew](https://github.com/mikrostew))
+- CI: Use yarn instead of npm [\#92](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/92) ([Turbo87](https://github.com/Turbo87))
+- Adds explicit function keyword, removing concise function syntax [\#85](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/85) ([craigotis](https://github.com/craigotis))
+
+## [v0.3.13](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/tree/v0.3.13) (2017-08-01)
+[Full Changelog](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/compare/v1.0.0...v0.3.13)
+
+**Merged pull requests:**
+
+- port parallel changes from master to 0.3.x branch [\#87](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/87) ([mikrostew](https://github.com/mikrostew))
+
+## [v1.0.0](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/tree/v1.0.0) (2017-08-01)
+[Full Changelog](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/compare/v0.4.4...v1.0.0)
+
+**Merged pull requests:**
+
+- Enable parallel transpile using API in broccoli-babel-transpiler [\#83](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/83) ([mikrostew](https://github.com/mikrostew))
+
 ## [v0.4.4](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/tree/v0.4.4) (2017-07-29)
 [Full Changelog](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/compare/v0.3.12...v0.4.4)
 
