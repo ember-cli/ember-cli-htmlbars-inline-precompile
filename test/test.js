@@ -2,6 +2,7 @@
 'use strict';
 
 const expect = require('chai').expect;
+const fs = require('fs');
 const path = require('path');
 const Registry = require('ember-cli-preprocess-registry');
 const HTMLBarsInlinePrecompilePlugin = require('babel-plugin-htmlbars-inline-precompile');
@@ -72,6 +73,7 @@ describe('included()', function() {
   let registry;
   let expectedRequireFilePath = path.resolve(__dirname, '../lib/require-from-worker');
   let expectedTemplateCompilerPath = path.resolve(__dirname, '../bower_components/ember/ember-template-compiler');
+  let templateCompilerContents = fs.readFileSync(`${expectedTemplateCompilerPath}.js`, { encoding: 'utf-8' });
   let testBaseDir = () => path.resolve(__dirname, '..');
   let configuredPlugins;
   let dependentParallelInfo = {
@@ -85,11 +87,26 @@ describe('included()', function() {
     baseDir: testBaseDir,
     parallelBabel: dependentParallelInfo,
   };
-
   let nonParallelPlugin = {
     name: 'some-regular-plugin',
     plugin: 'some object',
     baseDir: testBaseDir,
+  };
+  let parallelBabelInfo0Plugin = {
+    requireFile: expectedRequireFilePath,
+    buildUsing: 'build',
+    params: {
+      templateCompilerPath: expectedTemplateCompilerPath,
+      parallelConfig: []
+    }
+  };
+  let parallelBabelInfo1Plugin = {
+    requireFile: expectedRequireFilePath,
+    buildUsing: 'build',
+    params: {
+      templateCompilerPath: expectedTemplateCompilerPath,
+      parallelConfig: [ dependentParallelInfo ]
+    }
   };
 
   beforeEach(function() {
@@ -142,6 +159,15 @@ describe('included()', function() {
       expect(typeof configuredPlugins[0].baseDir).to.eql('function');
       expect(configuredPlugins[0].baseDir()).to.eql(testBaseDir());
     });
+
+    it('should have cacheKey()', function() {
+      let expectedCacheKey = [templateCompilerContents, JSON.stringify(parallelBabelInfo0Plugin)].join('|');
+      expect(configuredPlugins.length).to.eql(1);
+      expect(typeof configuredPlugins[0].cacheKey).to.eql('function');
+      let cacheKey = configuredPlugins[0].cacheKey();
+      expect(cacheKey.length).to.eql(expectedCacheKey.length, 'cacheKey is the correct length');
+      expect(cacheKey).to.equal(expectedCacheKey);
+    });
   });
 
   describe('1 parallel plugin', function() {
@@ -167,6 +193,15 @@ describe('included()', function() {
       expect(typeof configuredPlugins[0].baseDir).to.eql('function');
       expect(configuredPlugins[0].baseDir()).to.eql(testBaseDir());
     });
+
+    it('should have cacheKey()', function() {
+      let expectedCacheKey = [templateCompilerContents, JSON.stringify(parallelBabelInfo1Plugin)].concat('mock hash').join('|');
+      expect(configuredPlugins.length).to.eql(1);
+      expect(typeof configuredPlugins[0].cacheKey).to.eql('function');
+      let cacheKey = configuredPlugins[0].cacheKey();
+      expect(cacheKey.length).to.eql(expectedCacheKey.length, 'cacheKey is the correct length');
+      expect(cacheKey).to.equal(expectedCacheKey);
+    });
   });
 
   describe('1 non-parallel plugin', function() {
@@ -182,6 +217,7 @@ describe('included()', function() {
     });
 
     it('should have plugin object', function() {
+      let expectedCacheKey = [templateCompilerContents].concat(['mock hash']).join('|');
       expect(Array.isArray(configuredPlugins[0])).to.eql(true);
       expect(configuredPlugins[0].length).to.eql(2);
       let pluginObject = configuredPlugins[0][0];
@@ -191,6 +227,9 @@ describe('included()', function() {
       expect(typeof pluginParams.precompile.baseDir).to.eql('function');
       expect(pluginParams.precompile.baseDir()).to.eql(testBaseDir());
       expect(typeof pluginParams.precompile.cacheKey).to.eql('function');
+      let cacheKey = pluginParams.precompile.cacheKey();
+      expect(cacheKey.length).to.equal(expectedCacheKey.length);
+      expect(cacheKey).to.equal(expectedCacheKey);
     });
   });
 
@@ -208,6 +247,7 @@ describe('included()', function() {
     });
 
     it('should have plugin object', function() {
+      let expectedCacheKey = [templateCompilerContents].concat(['mock hash', 'mock hash']).join('|');
       expect(Array.isArray(configuredPlugins[0])).to.eql(true);
       expect(configuredPlugins[0].length).to.eql(2);
       let pluginObject = configuredPlugins[0][0];
@@ -217,6 +257,9 @@ describe('included()', function() {
       expect(typeof pluginParams.precompile.baseDir).to.eql('function');
       expect(pluginParams.precompile.baseDir()).to.eql(testBaseDir());
       expect(typeof pluginParams.precompile.cacheKey).to.eql('function');
+      let cacheKey = pluginParams.precompile.cacheKey();
+      expect(cacheKey.length).to.equal(expectedCacheKey.length);
+      expect(cacheKey).to.equal(expectedCacheKey);
     });
   });
 });
