@@ -217,6 +217,7 @@ describe('included()', function() {
     });
 
     it('should have plugin object', function() {
+      let expectedCacheKey = [templateCompilerContents].concat(['mock hash']).join('|');
       expect(Array.isArray(configuredPlugins[0])).to.eql(true);
       expect(configuredPlugins[0].length).to.eql(2);
       let pluginObject = configuredPlugins[0][0];
@@ -226,6 +227,9 @@ describe('included()', function() {
       expect(typeof pluginParams.precompile.baseDir).to.eql('function');
       expect(pluginParams.precompile.baseDir()).to.eql(testBaseDir());
       expect(typeof pluginParams.precompile.cacheKey).to.eql('function');
+      let cacheKey = pluginParams.precompile.cacheKey();
+      expect(cacheKey.length).to.equal(expectedCacheKey.length);
+      expect(cacheKey).to.equal(expectedCacheKey);
     });
   });
 
@@ -243,6 +247,7 @@ describe('included()', function() {
     });
 
     it('should have plugin object', function() {
+      let expectedCacheKey = [templateCompilerContents].concat(['mock hash', 'mock hash']).join('|');
       expect(Array.isArray(configuredPlugins[0])).to.eql(true);
       expect(configuredPlugins[0].length).to.eql(2);
       let pluginObject = configuredPlugins[0][0];
@@ -252,6 +257,9 @@ describe('included()', function() {
       expect(typeof pluginParams.precompile.baseDir).to.eql('function');
       expect(pluginParams.precompile.baseDir()).to.eql(testBaseDir());
       expect(typeof pluginParams.precompile.cacheKey).to.eql('function');
+      let cacheKey = pluginParams.precompile.cacheKey();
+      expect(cacheKey.length).to.equal(expectedCacheKey.length);
+      expect(cacheKey).to.equal(expectedCacheKey);
     });
   });
 });
