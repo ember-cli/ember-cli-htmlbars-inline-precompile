@@ -2,6 +2,7 @@
 'use strict';
 
 const expect = require('chai').expect;
+const fs = require('fs');
 const path = require('path');
 const Registry = require('ember-cli-preprocess-registry');
 const HTMLBarsInlinePrecompilePlugin = require('babel-plugin-htmlbars-inline-precompile');
@@ -72,6 +73,7 @@ describe('included()', function() {
   let registry;
   let expectedRequireFilePath = path.resolve(__dirname, '../lib/require-from-worker');
   let expectedTemplateCompilerPath = path.resolve(__dirname, '../bower_components/ember/ember-template-compiler');
+  let templateCompilerContents = fs.readFileSync(`${expectedTemplateCompilerPath}.js`, { encoding: 'utf-8' });
   let testBaseDir = () => path.resolve(__dirname, '..');
   let configuredPlugins;
   let dependentParallelInfo = {
@@ -85,11 +87,26 @@ describe('included()', function() {
     baseDir: testBaseDir,
     parallelBabel: dependentParallelInfo,
   };
-
   let nonParallelPlugin = {
     name: 'some-regular-plugin',
     plugin: 'some object',
     baseDir: testBaseDir,
+  };
+  let parallelBabelInfo0Plugin = {
+    requireFile: expectedRequireFilePath,
+    buildUsing: 'build',
+    params: {
+      templateCompilerPath: expectedTemplateCompilerPath,
+      parallelConfig: []
+    }
+  };
+  let parallelBabelInfo1Plugin = {
+    requireFile: expectedRequireFilePath,
+    buildUsing: 'build',
+    params: {
+      templateCompilerPath: expectedTemplateCompilerPath,
+      parallelConfig: [ dependentParallelInfo ]
+    }
   };
 
   beforeEach(function() {
@@ -142,6 +159,15 @@ describe('included()', function() {
       expect(typeof configuredPlugins[0].baseDir).to.eql('function');
       expect(configuredPlugins[0].baseDir()).to.eql(testBaseDir());
     });
+
+    it('should have cacheKey()', function() {
+      let expectedCacheKey = [templateCompilerContents, JSON.stringify(parallelBabelInfo0Plugin)].join('|');
+      expect(configuredPlugins.length).to.eql(1);
+      expect(typeof configuredPlugins[0].cacheKey).to.eql('function');
+      let cacheKey = configuredPlugins[0].cacheKey();
+      expect(cacheKey.length).to.eql(expectedCacheKey.length, 'cacheKey is the correct length');
+      expect(cacheKey).to.equal(expectedCacheKey);
+    });
   });
 
   describe('1 parallel plugin', function() {
@@ -166,6 +192,15 @@ describe('included()', function() {
       expect(configuredPlugins.length).to.eql(1);
       expect(typeof configuredPlugins[0].baseDir).to.eql('function');
       expect(configuredPlugins[0].baseDir()).to.eql(testBaseDir());
+    });
+
+    it('should have cacheKey()', function() {
+      let expectedCacheKey = [templateCompilerContents, JSON.stringify(parallelBabelInfo1Plugin)].concat('mock hash').join('|');
+      expect(configuredPlugins.length).to.eql(1);
+      expect(typeof configuredPlugins[0].cacheKey).to.eql('function');
+      let cacheKey = configuredPlugins[0].cacheKey();
+      expect(cacheKey.length).to.eql(expectedCacheKey.length, 'cacheKey is the correct length');
+      expect(cacheKey).to.equal(expectedCacheKey);
     });
   });
 

@@ -61,18 +61,24 @@ module.exports = {
     if (!this._registeredWithBabel) {
       let templateCompilerPath = this.templateCompilerPath();
       let parallelConfig = this.getParallelConfig(pluginWrappers);
+      let pluginInfo = this.astPlugins();
+
       if (this.canParallelize(pluginWrappers)) {
         _logger.debug('using parallel API with broccoli-babel-transpiler');
+        let parallelBabelInfo = {
+          requireFile: path.resolve(__dirname, 'lib/require-from-worker'),
+          buildUsing: 'build',
+          params: {
+            templateCompilerPath,
+            parallelConfig
+          }
+        };
+        // parallelBabelInfo will not be used in the cache unless it is explicitly included
+        let cacheKey = AstPlugins.makeCacheKey(templateCompilerPath, pluginInfo, JSON.stringify(parallelBabelInfo));
         babelPlugins.push({
-          _parallelBabel: {
-            requireFile: path.resolve(__dirname, 'lib/require-from-worker'),
-            buildUsing: 'build',
-            params: {
-              templateCompilerPath,
-              parallelConfig
-            }
-          },
+          _parallelBabel: parallelBabelInfo,
           baseDir: () => __dirname,
+          cacheKey: () => cacheKey,
         });
       }
       else {
@@ -84,7 +90,6 @@ module.exports = {
         }).filter(Boolean);
         _logger.debug('Prevented by these plugins: ' + blockingPlugins);
 
-        let pluginInfo = this.astPlugins();
         let htmlBarsPlugin = AstPlugins.setup(pluginInfo, {
           projectConfig: this.projectConfig(),
           templateCompilerPath: this.templateCompilerPath(),
