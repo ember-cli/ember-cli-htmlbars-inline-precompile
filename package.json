@@ -53,7 +53,7 @@
     "ember-cli"
   ],
   "dependencies": {
-    "babel-plugin-htmlbars-inline-precompile": "^0.2.4",
+    "babel-plugin-htmlbars-inline-precompile": "^0.2.5",
     "ember-cli-version-checker": "^2.0.0",
     "hash-for-dep": "^1.0.2",
     "heimdalljs-logger": "^0.1.7",
