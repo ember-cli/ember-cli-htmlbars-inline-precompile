@@ -539,9 +539,9 @@ babel-plugin-eval@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/babel-plugin-eval/-/babel-plugin-eval-1.0.1.tgz#a2faed25ce6be69ade4bfec263f70169195950da"
 
-babel-plugin-htmlbars-inline-precompile@^0.2.4:
-  version "0.2.4"
-  resolved "https://registry.yarnpkg.com/babel-plugin-htmlbars-inline-precompile/-/babel-plugin-htmlbars-inline-precompile-0.2.4.tgz#54b48168432bbc03f1f26f2e9090cb222bc78c75"
+babel-plugin-htmlbars-inline-precompile@^0.2.5:
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/babel-plugin-htmlbars-inline-precompile/-/babel-plugin-htmlbars-inline-precompile-0.2.5.tgz#7a7c37cf22c73fb57a1f828c76520f0360c5c5f3"
 
 babel-plugin-inline-environment-variables@^1.0.1:
   version "1.0.1"
