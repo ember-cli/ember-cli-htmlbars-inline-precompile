@@ -1,6 +1,6 @@
 {
   "name": "ember-cli-htmlbars-inline-precompile",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Precompile inline HTMLBars templates via ES6 tagged template strings",
   "directories": {
     "doc": "doc",
