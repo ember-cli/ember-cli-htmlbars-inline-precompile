@@ -3459,7 +3459,7 @@ heimdalljs-fs-monitor@^0.1.0:
     heimdalljs "^0.2.0"
     heimdalljs-logger "^0.1.7"
 
-heimdalljs-logger@^0.1.7:
+heimdalljs-logger@^0.1.7, heimdalljs-logger@^0.1.9:
   version "0.1.9"
   resolved "https://registry.yarnpkg.com/heimdalljs-logger/-/heimdalljs-logger-0.1.9.tgz#d76ada4e45b7bb6f786fc9c010a68eb2e2faf176"
   dependencies:
