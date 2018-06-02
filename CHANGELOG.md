@@ -1,5 +1,28 @@
 # Change Log
 
+## [v1.0.3](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/tree/v1.0.3) (2018-06-02)
+[Full Changelog](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/compare/v1.0.2...v1.0.3)
+
+**Implemented enhancements:**
+
+- Make imports from `ember-cli-htmlbars-inline-precompile` work too [\#101](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/issues/101)
+- Update minimum versions of dependencies. [\#106](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/106) ([rwjblue](https://github.com/rwjblue))
+- Add support for importing from `ember-cli-htmlbars-inline-precompile` [\#102](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/102) ([Turbo87](https://github.com/Turbo87))
+
+**Fixed bugs:**
+
+- hbs is not defined [\#8](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/issues/8)
+
+**Closed issues:**
+
+- Plugin 1 specified in "base" provided an invalid property of "\_parallelBabel" [\#90](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/issues/90)
+- templateCompiler change during session does not invalidate the cache [\#41](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/issues/41)
+
+**Merged pull requests:**
+
+- Replace JSHint with ESLint [\#104](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/104) ([Turbo87](https://github.com/Turbo87))
+- Use headless Chrome for testing [\#103](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/103) ([Turbo87](https://github.com/Turbo87))
+
 ## [v1.0.2](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/tree/v1.0.2) (2017-08-09)
 [Full Changelog](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/compare/v1.0.1...v1.0.2)
 
