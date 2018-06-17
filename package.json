@@ -8,6 +8,7 @@
   },
   "scripts": {
     "build": "ember build",
+    "changelog": "lerna-changelog",
     "lint:js": "eslint ./*.js addon addon-test-support app config lib server test-support tests",
     "start": "ember server",
     "test": "mocha node-tests && ember try:each",
@@ -44,6 +45,7 @@
     "eslint-plugin-ember": "^5.0.0",
     "eslint-plugin-node": "^5.2.1",
     "htmlbars-comment-redactor": "^0.0.4",
+    "lerna-changelog": "^0.7.0",
     "loader.js": "^4.0.10",
     "mocha": "^3.4.2",
     "username-sync": "^1.0.1"
