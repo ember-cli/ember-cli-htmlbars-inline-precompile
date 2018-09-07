@@ -155,8 +155,6 @@ module.exports = {
     let ember = this.project.findAddonByName('ember-source');
     if (ember) {
       return ember.absolutePaths.templateCompiler;
-    } else if (!templateCompilerPath) {
-      templateCompilerPath = this.project.bowerDirectory + '/ember/ember-template-compiler';
     }
 
     return path.resolve(this.project.root, templateCompilerPath);
