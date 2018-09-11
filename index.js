@@ -5,6 +5,7 @@ const AstPlugins = require('./lib/ast-plugins');
 const VersionChecker = require('ember-cli-version-checker');
 const SilentError = require('silent-error');
 const debugGenerator = require('heimdalljs-logger');
+const hashForDep = require('hash-for-dep');
 
 const _logger = debugGenerator('ember-cli-htmlbars-inline-precompile');
 
@@ -99,6 +100,45 @@ module.exports = {
 
   _getAddonOptions() {
     return (this.parent && this.parent.options) || (this.app && this.app.options) || {};
+  },
+
+  // from ember-cli-htmlbars :(
+  // To keep ember-cli-htmlbars caching in sync, astPlugins() function needs to same as in ember-cli-htmlbars
+  // link to function: https://github.com/ember-cli/ember-cli-htmlbars/blob/master/ember-addon-main.js#L103
+  astPlugins() {
+    let pluginWrappers = this.parentRegistry.load('htmlbars-ast-plugin');
+    let plugins = [];
+    let cacheKeys = [];
+
+    for (let i = 0; i < pluginWrappers.length; i++) {
+      let wrapper = pluginWrappers[i];
+
+      plugins.push(wrapper.plugin);
+
+      let providesBaseDir = typeof wrapper.baseDir === 'function';
+      let augmentsCacheKey = typeof wrapper.cacheKey === 'function';
+
+      if (providesBaseDir || augmentsCacheKey) {
+        if (providesBaseDir) {
+          let pluginHashForDep = hashForDep(wrapper.baseDir());
+          cacheKeys.push(pluginHashForDep);
+        }
+        if (augmentsCacheKey) {
+          cacheKeys.push(wrapper.cacheKey());
+        }
+      } else {
+        // support for ember-cli < 2.2.0
+        let log = this.ui.writeDeprecateLine || this.ui.writeLine;
+
+        log.call(this.ui, 'ember-cli-htmlbars-inline-precompile is opting out of caching due to an AST plugin that does not provide a caching strategy: `' + wrapper.name + '`.');
+        cacheKeys.push((new Date()).getTime() + '|' + Math.random());
+      }
+    }
+
+    return {
+      plugins: plugins,
+      cacheKeys: cacheKeys
+    };
   },
 
   // verify that each registered ast plugin can be parallelized
