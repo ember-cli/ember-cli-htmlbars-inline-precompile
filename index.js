@@ -1,7 +1,6 @@
 'use strict';
 
 const path = require('path');
-const hashForDep = require('hash-for-dep');
 const AstPlugins = require('./lib/ast-plugins');
 const VersionChecker = require('ember-cli-version-checker');
 const SilentError = require('silent-error');
@@ -60,7 +59,7 @@ module.exports = {
     if (!this._registeredWithBabel) {
       let templateCompilerPath = this.templateCompilerPath();
       let parallelConfig = this.getParallelConfig(pluginWrappers);
-      let pluginInfo = this.astPlugins();
+      let pluginInfo = AstPlugins.setupDependentPlugins(pluginWrappers);
 
       if (this.canParallelize(pluginWrappers)) {
         _logger.debug('using parallel API with broccoli-babel-transpiler');
@@ -88,7 +87,6 @@ module.exports = {
           }
         }).filter(Boolean);
         _logger.debug('Prevented by these plugins: ' + blockingPlugins);
-
         let htmlBarsPlugin = AstPlugins.setup(pluginInfo, {
           projectConfig: this.projectConfig(),
           templateCompilerPath: this.templateCompilerPath(),
@@ -101,35 +99,6 @@ module.exports = {
 
   _getAddonOptions() {
     return (this.parent && this.parent.options) || (this.app && this.app.options) || {};
-  },
-
-  // from ember-cli-htmlbars :(
-  astPlugins() {
-    let pluginWrappers = this.parentRegistry.load('htmlbars-ast-plugin');
-    let plugins = [];
-    let cacheKeys = [];
-
-    for (let i = 0; i < pluginWrappers.length; i++) {
-      let wrapper = pluginWrappers[i];
-
-      plugins.push(wrapper.plugin);
-
-      if (typeof wrapper.baseDir === 'function') {
-        let pluginHashForDep = hashForDep(wrapper.baseDir());
-        cacheKeys.push(pluginHashForDep);
-      } else {
-        // support for ember-cli < 2.2.0
-        let log = this.ui.writeDeprecateLine || this.ui.writeLine;
-
-        log.call(this.ui, 'ember-cli-htmlbars-inline-precompile is opting out of caching due to an AST plugin that does not provide a caching strategy: `' + wrapper.name + '`.');
-        cacheKeys.push((new Date()).getTime() + '|' + Math.random());
-      }
-    }
-
-    return {
-      plugins: plugins,
-      cacheKeys: cacheKeys
-    };
   },
 
   // verify that each registered ast plugin can be parallelized

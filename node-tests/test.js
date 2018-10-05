@@ -6,14 +6,9 @@ const fs = require('fs');
 const path = require('path');
 const Registry = require('ember-cli-preprocess-registry');
 const HTMLBarsInlinePrecompilePlugin = require('babel-plugin-htmlbars-inline-precompile');
-
-// hack require.cache to mock hashForDep (and avoid multi-second initial run time)
-require('hash-for-dep');
-let hashForDepFullPath = require.resolve('hash-for-dep');
-require.cache[hashForDepFullPath].exports = function hashForDep() { return 'mock hash'; };
-
+const hashForDep = require('hash-for-dep');
+const pluginHashForDep = hashForDep(path.resolve(__dirname, './fixtures'));
 const InlinePrecompile = require('../');
-
 
 describe('canParallelize()', function() {
   it('returns true for 0 plugins', function() {
@@ -75,6 +70,7 @@ describe('included()', function() {
   let expectedTemplateCompilerPath = path.resolve(__dirname, '../node_modules/ember-source/dist/ember-template-compiler.js');
   let templateCompilerContents = fs.readFileSync(`${expectedTemplateCompilerPath}`, { encoding: 'utf-8' });
   let testBaseDir = () => path.resolve(__dirname, '..');
+  let FixtureBaseDir = () => path.resolve(__dirname, './fixtures');
   let configuredPlugins;
   let dependentParallelInfo = {
     requireFile: 'some/file/path',
@@ -84,13 +80,13 @@ describe('included()', function() {
   let parallelPlugin = {
     name: 'some-parallel-plugin',
     plugin: 'some object',
-    baseDir: testBaseDir,
+    baseDir: FixtureBaseDir,
     parallelBabel: dependentParallelInfo,
   };
   let nonParallelPlugin = {
     name: 'some-regular-plugin',
     plugin: 'some object',
-    baseDir: testBaseDir,
+    baseDir: FixtureBaseDir,
   };
   let parallelBabelInfo0Plugin = {
     requireFile: expectedRequireFilePath,
@@ -194,7 +190,7 @@ describe('included()', function() {
     });
 
     it('should have cacheKey()', function() {
-      let expectedCacheKey = [templateCompilerContents, JSON.stringify(parallelBabelInfo1Plugin)].concat('mock hash').join('|');
+      let expectedCacheKey = [templateCompilerContents, JSON.stringify(parallelBabelInfo1Plugin)].concat(pluginHashForDep).join('|');
       expect(configuredPlugins.length).to.eql(1);
       expect(typeof configuredPlugins[0].cacheKey).to.eql('function');
       let cacheKey = configuredPlugins[0].cacheKey();
@@ -216,7 +212,7 @@ describe('included()', function() {
     });
 
     it('should have plugin object', function() {
-      let expectedCacheKey = [templateCompilerContents].concat(['mock hash']).join('|');
+      let expectedCacheKey = [templateCompilerContents].concat([pluginHashForDep]).join('|');
       expect(Array.isArray(configuredPlugins[0])).to.eql(true);
       expect(configuredPlugins[0].length).to.eql(2);
       let pluginObject = configuredPlugins[0][0];
@@ -246,7 +242,7 @@ describe('included()', function() {
     });
 
     it('should have plugin object', function() {
-      let expectedCacheKey = [templateCompilerContents].concat(['mock hash', 'mock hash']).join('|');
+      let expectedCacheKey = [templateCompilerContents].concat([pluginHashForDep, pluginHashForDep]).join('|');
       expect(Array.isArray(configuredPlugins[0])).to.eql(true);
       expect(configuredPlugins[0].length).to.eql(2);
       let pluginObject = configuredPlugins[0][0];
