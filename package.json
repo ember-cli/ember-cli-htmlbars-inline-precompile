@@ -62,6 +62,10 @@
   "peerDependencies": {
     "ember-cli-babel": "^6.7.1"
   },
+  "resolutions": {
+    "ember-cli-qunit/qunit": "~2.6.0",
+    "ember-cli-broccoli-sane-watcher": "~2.1.0"
+  },
   "ember-addon": {
     "configPath": "tests/dummy/config",
     "after": "ember-cli-htmlbars"
