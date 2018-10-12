@@ -1,4 +1,5 @@
 /* jshint node: true */
+/* globals require describe it beforeEach __dirname */
 'use strict';
 
 const expect = require('chai').expect;
@@ -72,7 +73,7 @@ describe('included()', function() {
   let parent;
   let registry;
   let expectedRequireFilePath = path.resolve(__dirname, '../lib/require-from-worker');
-  let expectedTemplateCompilerPath = path.resolve(__dirname, '../bower_components/ember/ember-template-compiler');
+  let expectedTemplateCompilerPath = path.resolve(__dirname, '../node_modules/ember-source/dist/ember-template-compiler');
   let templateCompilerContents = fs.readFileSync(`${expectedTemplateCompilerPath}.js`, { encoding: 'utf-8' });
   let testBaseDir = () => path.resolve(__dirname, '..');
   let configuredPlugins;
@@ -121,7 +122,7 @@ describe('included()', function() {
       findAddonByName(addon) {
         return {
           'ember-cli-htmlbars': { inlinePrecompilerRegistered: false },
-          'ember-source': false,
+          'ember-source': { absolutePaths: { templateCompiler: expectedTemplateCompilerPath }},
         }[addon];
       },
       config() {
@@ -129,8 +130,7 @@ describe('included()', function() {
           'ember-cli-htmlbars': { templateCompilerPath: undefined }
         };
       },
-      root: __dirname,
-      bowerDirectory: '../bower_components',
+      root: __dirname
     };
     InlinePrecompile.parent = parent;
     InlinePrecompile._registeredWithBabel = false;
