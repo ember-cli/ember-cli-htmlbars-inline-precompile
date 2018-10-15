@@ -1,6 +1,6 @@
-import Ember from 'ember';
+import Component from '@ember/component';
 import hbs from 'htmlbars-inline-precompile';
 
-export default Ember.Component.extend({
+export default Component.extend({
   layout: hbs('<p id="comment"><!-- this comment will not show up --></p>')
 });

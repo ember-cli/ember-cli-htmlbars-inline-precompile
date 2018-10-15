@@ -8,5 +8,5 @@ moduleForComponent('multiline-string', {
 test('using `hbs` tagged string places the precompiled template', function(assert) {
   this.render(hbs`{{multiline-string}}`);
 
-  assert.equal(this.$().text().trim(), "greeting: hello from view", "multiline string works");
+  assert.dom().hasText("greeting: hello from view", "multiline string works");
 });

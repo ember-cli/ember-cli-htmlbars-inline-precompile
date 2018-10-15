@@ -12,9 +12,9 @@ test('block params work', function(assert) {
     {{/days-ago}}
   `);
 
-  assert.equal(this.$().text().trim(), "date='' daysAgo=42");
+  assert.dom().hasText("date='' daysAgo=42");
 
   this.set('theDate', "the date");
 
-  assert.equal(this.$().text().trim(), "date='the date' daysAgo=42");
+  assert.dom().hasText("date='the date' daysAgo=42");
 });

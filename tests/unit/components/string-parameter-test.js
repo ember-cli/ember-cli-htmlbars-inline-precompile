@@ -8,5 +8,5 @@ moduleForComponent('string-parameter', {
 test('using `hbs` tagged string places the precompiled template', function(assert) {
   this.render(hbs`{{string-parameter}}`);
 
-  assert.equal(this.$().text().trim(), "hello");
+  assert.dom().hasText('hello');
 });

@@ -12,25 +12,28 @@ module.exports = {
     'plugin:ember/recommended'
   ],
   env: {
-    browser: true
+    browser: true,
+    node: true,
+    mocha: true
   },
   rules: {
-    'ember/new-module-imports': 'off',
   },
   overrides: [
     // node files
     {
       files: [
+        '.template-lintrc.js',
+        'ember-cli-build.js',
         'index.js',
         'testem.js',
-        'ember-cli-build.js',
+        'blueprints/*/index.js',
         'config/**/*.js',
-        'lib/**/*.js',
         'tests/dummy/config/**/*.js'
       ],
       excludedFiles: [
-        'app/**',
         'addon/**',
+        'addon-test-support/**',
+        'app/**',
         'tests/dummy/app/**'
       ],
       parserOptions: {
