@@ -8,5 +8,5 @@ moduleForComponent('comment-redact', {
 test('htmlbars-ast-plugin addon redacts comment contents', function(assert) {
   this.render(hbs`{{comment-redact}}`);
 
-  assert.equal(this.$('#comment').html().trim(), '<!--[REDACTED]-->');
+  assert.dom('#comment').isNotVisible();
 });
