@@ -67,7 +67,7 @@
     "test": "tests"
   },
   "dependencies": {
-    "babel-plugin-htmlbars-inline-precompile": "^0.2.5",
+    "babel-plugin-htmlbars-inline-precompile": "^1.0.0",
     "ember-cli-version-checker": "^2.1.2",
     "hash-for-dep": "^1.2.3",
     "heimdalljs-logger": "^0.1.9",
