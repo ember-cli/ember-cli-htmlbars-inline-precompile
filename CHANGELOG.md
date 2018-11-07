@@ -1,5 +1,22 @@
 # Change Log
 
+## v2.0.0 (2018-11-07)
+
+#### :boom: Breaking Change
+* [#120](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/120) Upgrade to ember-cli@3.5 blueprint.  ([@arthirm](https://github.com/arthirm))
+* [#126](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/126) Remove Bower and run node-tests in CI ([@arthirm](https://github.com/arthirm))
+* [#119](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/119) Drop Node.js 4 support ([@Turbo87](https://github.com/Turbo87))
+
+#### :rocket: Enhancement
+* [#118](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/118) Update `.npmignore` file ([@Turbo87](https://github.com/Turbo87))
+
+#### :bug: Bug Fix
+* [#114](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/114) Avoid setting up plugins per template (setup once per worker) ([@arthirm](https://github.com/arthirm))
+
+#### Committers: 2
+- Arthi ([@arthirm](https://github.com/arthirm))
+- Tobias Bieniek ([@Turbo87](https://github.com/Turbo87))
+
 ## v1.0.5 (2018-10-12)
 
 #### :rocket: Enhancement
