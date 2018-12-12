@@ -56,7 +56,7 @@ module.exports = {
 
     // add the HTMLBarsInlinePrecompilePlugin to the list of plugins used by
     // the `ember-cli-babel` addon
-    if (!this._registeredWithBabel) {
+    if (!this._isBabelPluginRegistered(babelPlugins)) {
       let templateCompilerPath = this.templateCompilerPath();
       let parallelConfig = this.getParallelConfig(pluginWrappers);
       let pluginInfo = AstPlugins.setupDependentPlugins(pluginWrappers);
@@ -93,8 +93,26 @@ module.exports = {
         });
         babelPlugins.push(htmlBarsPlugin);
       }
-      this._registeredWithBabel = true;
     }
+  },
+
+  /**
+   * This function checks if 'ember-cli-htmlbars-inline-precompile' is already present in babelPlugins.
+   * The plugin object will be different for non parallel API and parallel API.
+   * For parallel api, check the `baseDir` of a plugin to see if it has current dirname
+   * For non parallel api, check the 'modulePaths' to see if it contains 'ember-cli-htmlbars-inline-precompile'
+   * @param {*} plugins
+   */
+  _isBabelPluginRegistered(plugins) {
+    return plugins.some(plugin => {
+      if (Array.isArray(plugin)) {
+        return plugin[0] === require.resolve('babel-plugin-htmlbars-inline-precompile');
+      } else if (plugin !== null && typeof plugin === 'object' && plugin._parallelBabel !== undefined) {
+        return plugin._parallelBabel.requireFile === path.resolve(__dirname, 'lib/require-from-worker');
+      } else {
+        return false;
+      }
+    });
   },
 
   _getAddonOptions() {

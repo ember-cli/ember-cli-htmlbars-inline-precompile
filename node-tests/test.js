@@ -5,10 +5,11 @@ const expect = require('chai').expect;
 const fs = require('fs');
 const path = require('path');
 const Registry = require('ember-cli-preprocess-registry');
-const HTMLBarsInlinePrecompilePlugin = require('babel-plugin-htmlbars-inline-precompile');
+const HTMLBarsInlinePrecompilePlugin = require.resolve('babel-plugin-htmlbars-inline-precompile');
 const hashForDep = require('hash-for-dep');
 const pluginHashForDep = hashForDep(path.resolve(__dirname, './fixtures'));
 const InlinePrecompile = require('../');
+const defaultsDeep = require('ember-cli-lodash-subset').defaultsDeep;
 
 describe('canParallelize()', function() {
   it('returns true for 0 plugins', function() {
@@ -256,5 +257,39 @@ describe('included()', function() {
       expect(cacheKey.length).to.equal(expectedCacheKey.length);
       expect(cacheKey).to.equal(expectedCacheKey);
     });
+  });
+
+  describe('different instances of inline precompile for the same parent', function() {
+    it('should have only 1 inlinePrecompile registered for parallel babel', function() {
+      let InlinePrecompile1  = defaultsDeep( {}, require('../'))
+      let InlinePrecompile2  = defaultsDeep( {}, require('../'))
+      parent = { options: { babel: { plugins: [] } } };
+      InlinePrecompile1.parent = parent;
+      InlinePrecompile2.parent = parent;
+
+      InlinePrecompile1.included();
+      configuredPlugins = parent.options.babel.plugins;
+      expect(configuredPlugins.length).to.eql(1);
+      InlinePrecompile2.included();
+      configuredPlugins = parent.options.babel.plugins;
+      expect(configuredPlugins.length).to.eql(1);
+    });
+
+    it('should have only 1 inlinePrecompile registered for non parallel babel', function() {
+      registry.add('htmlbars-ast-plugin', nonParallelPlugin);
+      let InlinePrecompile1  = defaultsDeep( {}, require('../'))
+      let InlinePrecompile2  = defaultsDeep( {}, require('../'))
+      parent = { options: { babel: { plugins: [] } } };
+      InlinePrecompile1.parent = parent;
+      InlinePrecompile2.parent = parent;
+
+      InlinePrecompile1.included();
+      configuredPlugins = parent.options.babel.plugins;
+      expect(configuredPlugins.length).to.eql(1);
+      InlinePrecompile2.included();
+      configuredPlugins = parent.options.babel.plugins;
+      expect(configuredPlugins.length).to.eql(1);
+    });
+
   });
 });
