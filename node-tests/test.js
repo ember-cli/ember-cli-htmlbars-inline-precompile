@@ -69,6 +69,9 @@ describe('included()', function() {
   let registry;
   let expectedRequireFilePath = path.resolve(__dirname, '../lib/require-from-worker');
   let expectedTemplateCompilerPath = path.resolve(__dirname, '../node_modules/ember-source/dist/ember-template-compiler.js');
+  if (!fs.existsSync(expectedTemplateCompilerPath)) {
+    expectedTemplateCompilerPath = path.resolve(__dirname, '../bower_components/ember/ember-template-compiler.js');
+  }
   let templateCompilerContents = fs.readFileSync(`${expectedTemplateCompilerPath}`, { encoding: 'utf-8' });
   let testBaseDir = () => path.resolve(__dirname, '..');
   let FixtureBaseDir = () => path.resolve(__dirname, './fixtures');
