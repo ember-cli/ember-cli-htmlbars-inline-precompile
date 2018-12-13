@@ -1,5 +1,21 @@
 # Change Log
 
+## v2.1.0 (2018-12-13)
+
+#### :rocket: Enhancement
+* [#156](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/156) Bring back support for Ember prior to 2.12 support (aka "bower support"). ([@rwjblue](https://github.com/rwjblue))
+
+#### :bug: Bug Fix
+* [#148](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/148) Prevent duplicating inline precompile babel plugin ([@arthirm](https://github.com/arthirm))
+
+#### :house: Internal
+* [#150](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/150) TravisCI: Remove deprecated `sudo: false` option ([@Turbo87](https://github.com/Turbo87))
+
+#### Committers: 3
+- Arthi ([@arthirm](https://github.com/arthirm))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Tobias Bieniek ([@Turbo87](https://github.com/Turbo87))
+
 ## v2.0.0 (2018-11-07)
 
 #### :boom: Breaking Change
