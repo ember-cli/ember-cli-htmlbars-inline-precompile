@@ -46,12 +46,6 @@ script:
   - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO --skip-cleanup
   - yarn run test:node
 
-language: node_js
-node_js:
-  - "6"
-  - "8"
-  - "10"
-
 before_deploy:
   - yarn global add auto-dist-tag
   - auto-dist-tag --write
