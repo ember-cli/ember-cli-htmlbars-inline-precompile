@@ -71,7 +71,8 @@
   },
   "resolutions": {
     "ember-cli-qunit/qunit": "~2.6.0",
-    "ember-cli-broccoli-sane-watcher": "~2.1.0"
+    "ember-cli-broccoli-sane-watcher": "~2.1.0",
+    "**/ember-cli-htmlbars-inline-precompile": "^1.0.5"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
