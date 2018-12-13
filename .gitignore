@@ -19,3 +19,5 @@
 # ember-try
 /.node_modules.ember-try/
 /package.json.ember-try
+/bower.json
+/bower_components/

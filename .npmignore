@@ -17,6 +17,8 @@
 /tests/
 /yarn.lock
 .gitkeep
+bower.json
+/bower_components/
 
 # ember-try
 /.node_modules.ember-try/
