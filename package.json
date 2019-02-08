@@ -46,7 +46,7 @@
     "loader.js": "^4.7.0",
     "mocha": "^5.2.0",
     "qunit-dom": "^0.8.0",
-    "username-sync": "^1.0.1"
+    "username-sync": "^1.0.2"
   },
   "keywords": [
     "ember-addon",
