@@ -61,7 +61,7 @@
   },
   "dependencies": {
     "babel-plugin-htmlbars-inline-precompile": "^1.0.0",
-    "ember-cli-version-checker": "^3.0.0",
+    "ember-cli-version-checker": "^3.1.0",
     "hash-for-dep": "^1.4.7",
     "heimdalljs-logger": "^0.1.9",
     "silent-error": "^1.1.0"
