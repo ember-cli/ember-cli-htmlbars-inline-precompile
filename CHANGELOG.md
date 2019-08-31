@@ -1,3 +1,26 @@
+## v3.0.0 (2019-08-31)
+
+#### :boom: Breaking Change
+* [#292](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/292) Drop support for Ember < 2.12. ([@rwjblue](https://github.com/rwjblue))
+* [#290](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/290) Drop Babel 6 support. ([@rwjblue](https://github.com/rwjblue))
+* [#288](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/288) Drop Node 6 and 11 support. ([@rwjblue](https://github.com/rwjblue))
+
+#### :rocket: Enhancement
+* [#291](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/291) Update babel-plugin-htmlbars-inline-precompile to 2.0.0. ([@rwjblue](https://github.com/rwjblue))
+
+#### :memo: Documentation
+* [#295](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/295) Modernize README. ([@rwjblue](https://github.com/rwjblue))
+
+#### :house: Internal
+* [#294](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/294) Remove TravisCI. ([@rwjblue](https://github.com/rwjblue))
+* [#289](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/289) Add GH Actions Workflow ([@rwjblue](https://github.com/rwjblue))
+* [#163](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/163) package.json: Remove obsolete `resolutions` ([@Turbo87](https://github.com/Turbo87))
+
+#### Committers: 3
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Tobias Bieniek ([@Turbo87](https://github.com/Turbo87))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
 # Change Log
 
 ## v2.1.0 (2018-12-13)
