@@ -12,7 +12,7 @@ template strings:
 // ember-cli-project/test/unit/components/my-component-test.js
 import { module, test } from 'qunit';
 import { render } from '@ember/test-helpers';
-import { setupRenderingTest, test } from 'ember-qunit';
+import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 module('my-component', function(hooks) {
