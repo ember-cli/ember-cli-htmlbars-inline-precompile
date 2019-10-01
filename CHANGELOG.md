@@ -1,3 +1,17 @@
+## v3.0.1 (2019-10-01)
+
+#### :memo: Documentation
+* [#320](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/320) Deprecate ember-cli-htmlbars-inline-precompiler. ([@rwjblue](https://github.com/rwjblue))
+* [#305](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/305) Fix import in README example ([@houli](https://github.com/houli))
+
+#### :house: Internal
+* [#321](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/321) Re-roll yarn.lock to avoid errors with yarn 1.19.0 ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 3
+- Eoin Houlihan ([@houli](https://github.com/houli))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
 ## v3.0.0 (2019-08-31)
 
 #### :boom: Breaking Change
