@@ -5,6 +5,15 @@
 [![Ember Observer Score](http://emberobserver.com/badges/ember-cli-htmlbars-inline-precompile.svg)](http://emberobserver.com/addons/ember-cli-htmlbars-inline-precompile)
 [![Dependency Status](https://david-dm.org/ember-cli/ember-cli-htmlbars-inline-precompile.svg)](https://david-dm.org/ember-cli/ember-cli-htmlbars-inline-precompile)
 
+
+## **Deprecated**
+
+Usage of this project is deprecated, its functionality has been migrated into
+[ember-cli-htmlbars](https://github.com/ember-cli/ember-cli-htmlbars) directly.
+Please upgrade to `ember-cli-htmlbars@4.0.3` or higher.
+
+## Usage
+
 Precompile template strings within the tests of an Ember project via tagged
 template strings:
 

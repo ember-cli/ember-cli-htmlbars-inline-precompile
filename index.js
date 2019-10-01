@@ -5,6 +5,7 @@ const AstPlugins = require('./lib/ast-plugins');
 const VersionChecker = require('ember-cli-version-checker');
 const SilentError = require('silent-error');
 const debugGenerator = require('heimdalljs-logger');
+const semver = require('semver');
 
 const _logger = debugGenerator('ember-cli-htmlbars-inline-precompile');
 
@@ -31,9 +32,15 @@ module.exports = {
   included() {
     this._super.included.apply(this, arguments);
 
-    let emberCLIHtmlBars = this.project.findAddonByName('ember-cli-htmlbars');
+    let projectEmberCliHtmlbars = this.project.findAddonByName('ember-cli-htmlbars');
+    if(projectEmberCliHtmlbars && projectEmberCliHtmlbars.inlinePrecompilerRegistered) {
+      return;
+    }
 
-    if(emberCLIHtmlBars && emberCLIHtmlBars.inlinePrecompilerRegistered) {
+    let parentEmberCliHtmlbars = this.parent.addons.find(a => a.name === 'ember-cli-htmlbars');
+    if (parentEmberCliHtmlbars && semver.gt(parentEmberCliHtmlbars.pkg.version, '4.0.2')) {
+      // ember-cli-htmlbars will issue a deprecation message, but we need to
+      // ensure that we don't attempt to add the babel plugin
       return;
     }
 
