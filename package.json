@@ -40,7 +40,7 @@
     "ember-cli-babel": "^7.11.1",
     "ember-cli-coffeescript": "github:rwjblue/ember-cli-coffeescript#update-version-checker-api",
     "ember-cli-dependency-checker": "^3.2.0",
-    "ember-cli-htmlbars": "^3.1.0",
+    "ember-cli-htmlbars": "^4.0.8",
     "ember-cli-inject-live-reload": "^2.0.1",
     "ember-cli-lodash-subset": "^2.0.1",
     "ember-cli-preprocess-registry": "^3.3.0",
