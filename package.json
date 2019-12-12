@@ -26,7 +26,7 @@
     "test:node:debug": "mocha debug node-tests/*.js"
   },
   "dependencies": {
-    "babel-plugin-htmlbars-inline-precompile": "^2.1.0",
+    "babel-plugin-htmlbars-inline-precompile": "^3.0.1",
     "ember-cli-version-checker": "^3.1.3",
     "hash-for-dep": "^1.5.1",
     "heimdalljs-logger": "^0.1.9",
