@@ -78,12 +78,19 @@ module.exports = {
             parallelConfig
           }
         };
-        // parallelBabelInfo will not be used in the cache unless it is explicitly included
-        let cacheKey = AstPlugins.makeCacheKey(templateCompilerPath, pluginInfo, JSON.stringify(parallelBabelInfo));
+
+        let cacheKey;
         babelPlugins.push({
           _parallelBabel: parallelBabelInfo,
           baseDir: () => __dirname,
-          cacheKey: () => cacheKey,
+          cacheKey: () => {
+            if (cacheKey === undefined) {
+              // parallelBabelInfo will not be used in the cache unless it is explicitly included
+              cacheKey = AstPlugins.makeCacheKey(templateCompilerPath, pluginInfo, JSON.stringify(parallelBabelInfo));
+            }
+
+            return cacheKey;
+          },
         });
       }
       else {
