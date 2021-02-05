@@ -1,3 +1,12 @@
+## v3.0.2 (2021-02-05)
+
+#### :rocket: Enhancement
+* [#408](https://github.com/ember-cli/ember-cli-htmlbars-inline-precompile/pull/408) Make cacheKey calculation lazy ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 2
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
 ## v3.0.1 (2019-10-01)
 
 #### :memo: Documentation
